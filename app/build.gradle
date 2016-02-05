@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.21.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        applicationId "com.rosterloh.mirror"
+        minSdkVersion 19
+        targetSdkVersion 23
+        version "${version_code}"
+        versionName "${version_name}"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    aaptOptions {
+        noCompress 'apk'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Google Play services split client libs. @see https://developers.google.com/android/guides/setup
+    //compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
+
+    // Android support libraries.
+    compile "com.android.support:design:${android_support_lib_version}"
+    compile "com.android.support:appcompat-v7:${android_support_lib_version}"
+    
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+
+    compile 'io.reactivex:rxandroid:1.1.0'
+
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile('com.github.afollestad:assent:0.2.0') {
+        transitive = true
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
+}
+
+ant.importBuild 'assets.xml'
+preBuild.dependsOn(list, checksum)
+clean.dependsOn(clean_assets)

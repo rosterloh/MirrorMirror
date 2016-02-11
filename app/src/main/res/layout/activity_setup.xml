@@ -118,6 +118,30 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
+                    android:id="@+id/tv_server_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/server_title"
+                    android:textSize="18sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/InputLayout">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/et_server_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/server_hint"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+                
+                <TextView
                     android:id="@+id/tv_temp_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

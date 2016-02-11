@@ -23,6 +23,7 @@ public class Constants {
     public static final String LOCATION_DEFAULT = "London";
     public static final String SUBREDDIT_DEFAULT = "news";
     public static final String POLLING_DELAY_DEFAULT = "30";
+    public static final String SERVER_DEFAULT = "tcp://localhost:1883";
 
     //Intent identifiers
     public static final String CONFIGURATION_IDENTIFIER = "conf";

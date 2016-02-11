@@ -27,6 +27,12 @@ import com.rosterloh.mirror.presenters.MainPresenterImpl;
 import com.rosterloh.mirror.util.Constants;
 import com.rosterloh.mirror.util.WeatherIconGenerator;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
@@ -128,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     Configuration mConfiguration;
     WeatherIconGenerator mIconGenerator;
 
+    MqttAndroidClient client;
+
     SpeechRecognizer recognizer;
     TextToSpeech mTts;
 
@@ -146,6 +154,29 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
         mMainPresenter = new MainPresenterImpl(this);
         mIconGenerator = WeatherIconGenerator.getInstance();
+
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), mConfiguration.getServerAddress(), clientId);
+
+        try {
+            IMqttToken token = client.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+                    Log.d(MainActivity.class.getSimpleName(), "Connected to MQTT");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Log.d(MainActivity.class.getSimpleName(), "Failed to connect to MQTT");
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private void hideSystemUI() {
@@ -306,6 +337,25 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
             }
         }
 
+        try {
+            IMqttToken disconToken = client.disconnect();
+            disconToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.d(MainActivity.class.getSimpleName(), "Disconnected from MQTT");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    // something went wrong, but probably we are disconnected anyway
+                    Log.d(MainActivity.class.getSimpleName(), "Error disconnecting from MQTT");
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
         // Cleans up references of the Activity to avoid memory leaks
         if (isFinishing())
             Assent.setActivity(this, null);
@@ -334,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
 
     @Override
     public void onError(Exception e) {
-        onError(e);
+        //onError(e);
         Log.e(MainActivity.class.getSimpleName(), e.toString());
     }
 

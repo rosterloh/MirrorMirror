@@ -35,6 +35,9 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @Bind(R.id.et_polling_delay)
     EditText mEditTextPollingDelay;
 
+    @Bind(R.id.et_server_address)
+    EditText mEditTextServerAddress;
+
     @Bind(R.id.rb_celsius)
     RadioButton mRbCelsius;
 
@@ -86,12 +89,17 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     @SuppressWarnings("unused")
     public void launch() {
 
-        mSetupPresenter.launch(mEditTextLocation.getText().toString(), mEditTextSubreddit.getText().toString(),
-                mEditTextPollingDelay.getText().toString(), mRbCelsius.isChecked(), mCbVoiceCommands.isChecked());
+        mSetupPresenter.launch(
+                mEditTextLocation.getText().toString(),
+                mEditTextSubreddit.getText().toString(),
+                mEditTextPollingDelay.getText().toString(),
+                mEditTextServerAddress.getText().toString(),
+                mRbCelsius.isChecked(),
+                mCbVoiceCommands.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, boolean celsius, boolean voiceCommands) {
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, String server, boolean celsius, boolean voiceCommands) {
 
         //Create configuration and pass in Intent
         Configuration configuration = new Configuration.Builder()
@@ -99,6 +107,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                 .location(location)
                 .subreddit(subreddit)
                 .pollingDelay(pollingDelay)
+                .serverAddress(server)
                 .voiceCommands(voiceCommands)
                 .build();
 

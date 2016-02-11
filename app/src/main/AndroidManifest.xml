@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".MirrorApplication"
@@ -22,12 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".views.MainActivity"
             android:label="@string/app_name"/>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="11c8dcdb1977b4a92bf4a926a50bf0eabbc54865" />
+
+        <service
+            android:name="org.eclipse.paho.android.service.MqttService" />
+
     </application>
 
 </manifest>

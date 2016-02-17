@@ -58,7 +58,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     // Google Play services split client libs. @see https://developers.google.com/android/guides/setup
-    //compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
+    compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
 
     // Android support libraries.
     compile "com.android.support:design:${android_support_lib_version}"
@@ -83,6 +83,8 @@ dependencies {
         exclude module: 'support-v4'
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 ant.importBuild 'assets.xml'
 preBuild.dependsOn(list, checksum)

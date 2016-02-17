@@ -17,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.rosterloh.mirror.MirrorApplication;
 import com.rosterloh.mirror.R;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.models.CurrentWeather;
@@ -128,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     @Bind(R.id.tv_reddit_post_votes)
     TextView mRedditPostVotes;
 
-
     IMainPresenter mMainPresenter;
     View mDecorView;
     Configuration mConfiguration;
@@ -139,10 +141,16 @@ public class MainActivity extends AppCompatActivity implements IMainView, View.O
     SpeechRecognizer recognizer;
     TextToSpeech mTts;
 
+    private Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MirrorApplication application = (MirrorApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
         ButterKnife.bind(this);
         Assent.setActivity(this, this);
 

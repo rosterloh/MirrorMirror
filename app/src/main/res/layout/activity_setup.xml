@@ -140,7 +140,7 @@
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
-                
+
                 <TextView
                     android:id="@+id/tv_temp_unit"
                     android:layout_width="wrap_content"

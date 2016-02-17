@@ -19,7 +19,8 @@
             android:format12Hour="kk:mm"
             android:format24Hour="kk:mm"
             android:textColor="@color/white"
-            android:textSize="200dp" />
+            android:textSize="200dp"
+            android:fontFamily="sans-serif-medium" />
 
         <TextClock
             android:id="@+id/tc_date"

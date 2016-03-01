@@ -1,5 +1,7 @@
 package com.rosterloh.mirror.presenters;
 
+import android.util.Log;
+
 import com.rosterloh.mirror.models.CurrentWeather;
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.services.GoogleCalendarService;
@@ -12,18 +14,18 @@ import com.rosterloh.mirror.views.MainActivity;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainPresenterImpl implements IMainPresenter {
+
+    private static final String TAG = MainPresenterImpl.class.getSimpleName();
 
     private YahooService mYahooService;
     private GoogleCalendarService mGoogleCalendarService;
@@ -31,7 +33,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
     private WeakReference<IMainView> mMainView;
 
-    private List<Subscription> mSubscriptions;
+    private CompositeSubscription mCompositeSubscription;
 
     public MainPresenterImpl(IMainView view) {
 
@@ -39,16 +41,17 @@ public class MainPresenterImpl implements IMainPresenter {
         mYahooService = new YahooService();
         mRedditService = new RedditService();
         mGoogleCalendarService = new GoogleCalendarService((MainActivity) mMainView.get());
-        mSubscriptions = new ArrayList<>();
+        mCompositeSubscription = new CompositeSubscription();
     }
 
     @Override
     public void loadLatestCalendarEvent(int updateDelay) {
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mGoogleCalendarService.getLatestCalendarEvent())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
@@ -57,7 +60,9 @@ public class MainPresenterImpl implements IMainPresenter {
                     @Override
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
-                            mMainView.get().onError(e.getLocalizedMessage());
+                            mMainView.get().showError(e.getLocalizedMessage());
+                        Log.d(TAG, "CalendarSubscription", e);
+
                     }
 
                     @Override
@@ -74,12 +79,13 @@ public class MainPresenterImpl implements IMainPresenter {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mYahooService.getApi().getCurrentWeatherConditions(Constants.WEATHER_QUERY_FIRST +
                         location + query, Constants.YAHOO_QUERY_FORMAT))
-                .flatMap(response -> mYahooService.getCurrentWeather(response))
+                .flatMap(mYahooService::getCurrentWeather)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<CurrentWeather>() {
                     @Override
                     public void onCompleted() {
@@ -88,13 +94,15 @@ public class MainPresenterImpl implements IMainPresenter {
                     @Override
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
-                            mMainView.get().onError(e.getLocalizedMessage());
+                            mMainView.get().showError(e.getLocalizedMessage());
+                        Log.d(TAG, "WeatherSubscription", e);
                     }
 
                     @Override
                     public void onNext(CurrentWeather weather) {
 
-                        if (mMainView.get() != null) mMainView.get().displayCurrentWeather(weather);
+                        if (mMainView.get() != null)
+                            mMainView.get().displayCurrentWeather(weather);
                     }
                 }));
     }
@@ -102,11 +110,12 @@ public class MainPresenterImpl implements IMainPresenter {
     @Override
     public void loadTopRedditPost(final String subreddit, int updateDelay) {
 
-        mSubscriptions.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        mCompositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
                 .flatMap(ignore -> mRedditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
-                .flatMap(response -> mRedditService.getRedditPost(response))
+                .flatMap(mRedditService::getRedditPost)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<RedditPost>() {
                     @Override
                     public void onCompleted() {
@@ -115,7 +124,8 @@ public class MainPresenterImpl implements IMainPresenter {
                     @Override
                     public void onError(Throwable e) {
                         if (mMainView.get() != null)
-                            mMainView.get().onError(e.getLocalizedMessage());
+                            mMainView.get().showError(e.getLocalizedMessage());
+                        Log.d(TAG, "RedditSubscription", e);
                     }
 
                     @Override
@@ -129,12 +139,8 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void unSubscribe() {
-        for (Subscription subscription : mSubscriptions) {
-            if (!subscription.isUnsubscribed()) {
-                subscription.unsubscribe();
-            }
-        }
-        mSubscriptions.clear();
+        mCompositeSubscription.unsubscribe();
+        mCompositeSubscription = new CompositeSubscription();
     }
 
     @Override
@@ -144,7 +150,8 @@ public class MainPresenterImpl implements IMainPresenter {
 
             prepareAssetsForRecognizer()
                     .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<Void>() {
                         @Override
                         public void onCompleted() {
@@ -154,7 +161,8 @@ public class MainPresenterImpl implements IMainPresenter {
                         @Override
                         public void onError(Throwable e) {
                             if (mMainView.get() != null)
-                                mMainView.get().onError(e.getLocalizedMessage());
+                                mMainView.get().showError(e.getLocalizedMessage());
+                            Log.e(TAG, "RecognitionService: ", e);
                         }
 
                         @Override

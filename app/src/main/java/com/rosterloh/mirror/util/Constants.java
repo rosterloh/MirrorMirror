@@ -27,6 +27,7 @@ public class Constants {
 
     //Intent identifiers
     public static final String CONFIGURATION_IDENTIFIER = "conf";
+    public static final String SAVED_CONFIGURATION_IDENTIFIER = "savedConf";
 
     //Formats
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
@@ -57,4 +58,15 @@ public class Constants {
     public static final String UPDATE_NOTIFICATION = "Updating";
     public static final String SLEEP_NOTIFICATION = "Later";
     public static final String WAKE_NOTIFICATION = "Hello";
+
+    //Shared preference identifiers
+    public static final String SP_LOCATION_IDENTIFIER = "location";
+    public static final String SP_SUBREDDIT_IDENTIFIER = "subreddit";
+    public static final String SP_POLLING_IDENTIFIER = "pollingDelay";
+    public static final String SP_SERVER_IDENTIFIER = "serverAddress";
+    public static final String SP_CELSIUS_IDENTIFIER = "celsius";
+    public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
+    public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
+    public static final String SP_LAYOUT_IDENTIFIER = "simpleLayout";
+
 }

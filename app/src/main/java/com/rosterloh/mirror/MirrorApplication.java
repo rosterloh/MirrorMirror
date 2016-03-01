@@ -1,11 +1,14 @@
 package com.rosterloh.mirror;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
 public class MirrorApplication extends Application {
+
+    private static Context context;
     private Tracker mTracker;
 
     /**
@@ -24,5 +27,10 @@ public class MirrorApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MirrorApplication.context = getApplicationContext();
+    }
+
+    public static Context getContext() {
+        return MirrorApplication.context;
     }
 }

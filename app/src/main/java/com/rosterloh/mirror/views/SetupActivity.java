@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
@@ -24,25 +25,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SetupActivity extends AppCompatActivity implements ISetupView, View.OnSystemUiVisibilityChangeListener, CompoundButton.OnCheckedChangeListener {
+public class SetupActivity extends AppCompatActivity implements ISetupView,
+            View.OnSystemUiVisibilityChangeListener, CompoundButton.OnCheckedChangeListener {
 
-    @Bind(R.id.et_location)
-    EditText mEditTextLocation;
-
-    @Bind(R.id.et_subreddit)
-    EditText mEditTextSubreddit;
-
-    @Bind(R.id.et_polling_delay)
-    EditText mEditTextPollingDelay;
-
-    @Bind(R.id.et_server_address)
-    EditText mEditTextServerAddress;
-
-    @Bind(R.id.rb_celsius)
-    RadioButton mRbCelsius;
-
-    @Bind(R.id.cb_voice_commands)
-    CheckBox mCbVoiceCommands;
+    @Bind(R.id.et_location) EditText mEditTextLocation;
+    @Bind(R.id.et_subreddit) EditText mEditTextSubreddit;
+    @Bind(R.id.tv_reddit_title) TextView mTvRedditTitle;
+    @Bind(R.id.et_polling_delay) EditText mEditTextPollingDelay;
+    @Bind(R.id.et_server_address) EditText mEditTextServerAddress;
+    @Bind(R.id.rb_celsius) RadioButton mRbCelsius;
+    @Bind(R.id.rb_simple) RadioButton mRbSimple;
+    @Bind(R.id.cb_voice_commands) CheckBox mCbVoiceCommands;
+    @Bind(R.id.cb_remember_config) CheckBox mCbRememberConfig;
 
     ISetupPresenter mSetupPresenter;
     View mDecorView;
@@ -64,6 +58,7 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
         }
 
         mCbVoiceCommands.setOnCheckedChangeListener(this);
+        mRbSimple.setOnCheckedChangeListener(this);
 
         mSetupPresenter = new SetupPresenterImpl(this);
     }
@@ -95,11 +90,15 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                 mEditTextPollingDelay.getText().toString(),
                 mEditTextServerAddress.getText().toString(),
                 mRbCelsius.isChecked(),
-                mCbVoiceCommands.isChecked());
+                mCbVoiceCommands.isChecked(),
+                mCbRememberConfig.isChecked(),
+                mRbSimple.isChecked());
     }
 
     @Override
-    public void navigateToMainActivity(String location, String subreddit, int pollingDelay, String server, boolean celsius, boolean voiceCommands) {
+    public void navigateToMainActivity(String location, String subreddit, int pollingDelay,
+                                       String server, boolean celsius, boolean voiceCommands,
+                                       boolean foundOldConfig, boolean simpleLayout) {
 
         //Create configuration and pass in Intent
         Configuration configuration = new Configuration.Builder()
@@ -109,10 +108,12 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
                 .pollingDelay(pollingDelay)
                 .serverAddress(server)
                 .voiceCommands(voiceCommands)
+                .simpleLayout(simpleLayout)
                 .build();
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.CONFIGURATION_IDENTIFIER, configuration);
+        intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, foundOldConfig);
         startActivity(intent);
     }
 
@@ -152,16 +153,27 @@ public class SetupActivity extends AppCompatActivity implements ISetupView, View
     }
 
     @Override
+    @SuppressWarnings("all")
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            if (!Assent.isPermissionGranted(Assent.RECORD_AUDIO)) {
-                Assent.requestPermissions(result -> {
-                    // Permission granted or denied
-                    if (!result.allPermissionsGranted()) {
-                        Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
-                        mCbVoiceCommands.setChecked(false);
-                    }
-                }, 2, Assent.RECORD_AUDIO);
+        if (buttonView.getId() == R.id.cb_voice_commands) {
+            if (isChecked) {
+                if (!Assent.isPermissionGranted(Assent.RECORD_AUDIO)) {
+                    Assent.requestPermissions(result -> {
+                        // Permission granted or denied
+                        if (!result.allPermissionsGranted()) {
+                            Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
+                            mCbVoiceCommands.setChecked(false);
+                        }
+                    }, 2, Assent.RECORD_AUDIO);
+                }
+            }
+        } else {
+            if (isChecked) {
+                mEditTextSubreddit.setVisibility(View.GONE);
+                mTvRedditTitle.setVisibility(View.GONE);
+            } else {
+                mEditTextSubreddit.setVisibility(View.VISIBLE);
+                mTvRedditTitle.setVisibility(View.VISIBLE);
             }
         }
     }

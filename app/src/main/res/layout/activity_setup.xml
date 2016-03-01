@@ -70,28 +70,33 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/tv_reddit_title"
+                    android:id="@+id/tv_layout_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/reddit_title"
+                    android:text="@string/appearance_title"
                     android:textSize="18sp" />
 
-                <android.support.design.widget.TextInputLayout
+                <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/InputLayout">
+                    android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/et_subreddit"
-                        android:layout_width="match_parent"
+                    <RadioButton
+                        android:id="@+id/rb_normal"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/subreddit_hint"
-                        android:inputType="text"
-                        android:singleLine="true" />
+                        android:checked="true"
+                        android:text="@string/appearance_normal" />
 
-                </android.support.design.widget.TextInputLayout>
+                    <RadioButton
+                        android:id="@+id/rb_simple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/appearance_simple" />
+
+                </RadioGroup>
 
                 <TextView
                     android:id="@+id/tv_weather_title"
@@ -172,6 +177,45 @@
                 </RadioGroup>
 
                 <TextView
+                    android:id="@+id/tv_reddit_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/reddit_title"
+                    android:textSize="18sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/InputLayout">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_subreddit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/subreddit_hint"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/other_title"
+                    android:textSize="18sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_remember_config"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remember_config" />
+
+                <TextView
                     android:id="@+id/tv_voice_commands"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -184,7 +228,7 @@
                     android:id="@+id/cb_voice_commands"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/turn_on_voice"/>
+                    android:text="@string/turn_on_voice" />
 
                 <Button
                     android:id="@+id/btn_launch"

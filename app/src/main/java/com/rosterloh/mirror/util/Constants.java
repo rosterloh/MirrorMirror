@@ -1,6 +1,6 @@
 package com.rosterloh.mirror.util;
 
-public class Constants {
+public final class Constants {
 
     //Query constants
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
@@ -69,4 +69,5 @@ public class Constants {
     public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
     public static final String SP_LAYOUT_IDENTIFIER = "simpleLayout";
 
+    private Constants() {}
 }

@@ -16,16 +16,16 @@ public class SetupPresenterImpl implements ISetupPresenter {
         mSetupView = new WeakReference<>(view);
         mPreferenceService = SharedPreferenceService.instance();
 
-        if (mPreferenceService.getRememberConfiguration())
-            if (mSetupView.get() != null)
-                mSetupView.get().navigateToMainActivity(mPreferenceService.getLocation(),
-                        mPreferenceService.getSubreddit(),
-                        mPreferenceService.getPollingDelay(),
-                        mPreferenceService.getServerAddress(),
-                        mPreferenceService.getCelsius(),
-                        mPreferenceService.getVoiceCommands(),
-                        true,
-                        mPreferenceService.getSimpleLayout());
+        if (mPreferenceService.getRememberConfiguration() && mSetupView.get() != null) {
+            mSetupView.get().navigateToMainActivity(mPreferenceService.getLocation(),
+                    mPreferenceService.getSubreddit(),
+                    mPreferenceService.getPollingDelay(),
+                    mPreferenceService.getServerAddress(),
+                    mPreferenceService.getCelsius(),
+                    mPreferenceService.getVoiceCommands(),
+                    true,
+                    mPreferenceService.getSimpleLayout());
+        }
     }
 
     @Override
@@ -35,9 +35,13 @@ public class SetupPresenterImpl implements ISetupPresenter {
         if (pollingDelay.equals("") || pollingDelay.equals("0"))
             pollingDelay = Constants.POLLING_DELAY_DEFAULT;
 
-        if (location.isEmpty()) location = Constants.LOCATION_DEFAULT;
+        if (location.isEmpty()) {
+            location = Constants.LOCATION_DEFAULT;
+        }
 
-        if (subreddit.isEmpty()) subreddit = Constants.SUBREDDIT_DEFAULT;
+        if (subreddit.isEmpty()) {
+            subreddit = Constants.SUBREDDIT_DEFAULT;
+        }
 
         if (rememberConfig) {
             mPreferenceService.storeConfiguration(location, subreddit, Integer.parseInt(pollingDelay),

@@ -5,8 +5,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
-        classpath 'com.google.gms:google-services:2.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:2.1.0-alpha1'
+        classpath 'com.google.gms:google-services:2.1.0-alpha1'
         // run gradle dependencyUpdates -Drevision=release @see https://github.com/ben-manes/gradle-versions-plugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }

@@ -5,11 +5,11 @@ import com.rosterloh.mirror.models.yahoo_weather.Channel;
 import com.rosterloh.mirror.models.yahoo_weather.YahooWeatherResponse;
 import com.rosterloh.mirror.util.Constants;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public class YahooService {
@@ -34,7 +34,7 @@ public class YahooService {
         // Convert degrees to cardinal directions for wind
         String[] directions = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
         String degrees = weatherData.getWind().getDirection();
-        String direction = degrees.equals("") ? "-" : directions[(int) Math.round(((Double.parseDouble(weatherData.getWind().getDirection()) % 360) / 45))];
+        String direction = degrees.equals("") ? "-" : directions[(int) Math.round((Double.parseDouble(weatherData.getWind().getDirection()) % 360) / 45)];
 
         return Observable.just(new CurrentWeather.Builder()
                 .title(weatherData.getTitle())

@@ -251,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements IMainView,
                     this.mCalendarLayout.setVisibility(View.VISIBLE);
                 }
                 break;
+            default:
+                break;
         }
     }
 

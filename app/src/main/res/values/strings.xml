@@ -35,6 +35,14 @@
     <!--Main Activity-->
     <string name="old_config_found_snackbar">Saved configuration found</string>
     <string name="old_config_found_snackbar_back">Back to setup</string>
-    <string name="simple_greeting">Hi there\nIt\'s</string>
+    <string name="simple_greeting">Hi there,\nIt\'s</string>
+    <string name="date_on" translatable="false">on</string>
+    <string name="last_updated">Last updated:</string>
+    <string name="validating">Validating..</string>
+    <string name="listening">Listening..</string>
+    <string name="give_command">Give a command</string>
+    <string name="command_understood">Command understood</string>
+    <string name="executing">Executing..</string>
+    <string name="tomorrow">Tomorrow</string>
 
 </resources>

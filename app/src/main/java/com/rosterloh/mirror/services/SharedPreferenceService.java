@@ -1,89 +1,88 @@
 package com.rosterloh.mirror.services;
 
-import android.content.Context;
+import android.app.Application;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.rosterloh.mirror.MirrorApplication;
+import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.util.Constants;
 
 public class SharedPreferenceService {
 
-    private static SharedPreferenceService sInstance;
-    private SharedPreferences mPrefs;
+    private SharedPreferences preferences;
 
-    private SharedPreferenceService() {
+    public SharedPreferenceService(Application application) {
 
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(application);
     }
 
-    public static SharedPreferenceService instance() {
-        if (sInstance == null) {
-            sInstance = new SharedPreferenceService();
-        }
+    public void storeConfiguration(Configuration configuration) {
 
-        return sInstance;
-    }
+        SharedPreferences.Editor editor = preferences.edit();
 
-    private SharedPreferences getPreferencesManager() {
-
-        if (mPrefs == null) {
-            mPrefs = MirrorApplication.getContext().getSharedPreferences("saveState", Context.MODE_PRIVATE);
-        }
-
-        return mPrefs;
-    }
-
-    public void storeConfiguration(String location, String subreddit, int pollingDelay,
-                                   String server, boolean celsius, boolean voiceCommands,
-                                   boolean rememberConfiguration, boolean simpleLayout) {
-
-        SharedPreferences.Editor editor = getPreferencesManager().edit();
-
-        editor.putString(Constants.SP_LOCATION_IDENTIFIER, location);
-        editor.putString(Constants.SP_SUBREDDIT_IDENTIFIER, subreddit);
-        editor.putInt(Constants.SP_POLLING_IDENTIFIER, pollingDelay);
-        editor.putString(Constants.SP_SERVER_IDENTIFIER, server);
-        editor.putBoolean(Constants.SP_CELSIUS_IDENTIFIER, celsius);
-        editor.putBoolean(Constants.SP_VOICE_IDENTIFIER, voiceCommands);
-        editor.putBoolean(Constants.SP_REMEMBER_IDENTIFIER, rememberConfiguration);
-        editor.putBoolean(Constants.SP_LAYOUT_IDENTIFIER, simpleLayout);
+        editor.putString(Constants.SP_LOCATION_IDENTIFIER, configuration.getLocation());
+        editor.putString(Constants.SP_SUBREDDIT_IDENTIFIER, configuration.getSubreddit());
+        editor.putInt(Constants.SP_POLLING_IDENTIFIER, configuration.getPollingDelay());
+        editor.putString(Constants.SP_SERVER_IDENTIFIER, configuration.getServerAddress());
+        editor.putBoolean(Constants.SP_CELSIUS_IDENTIFIER, configuration.isCelsius());
+        editor.putBoolean(Constants.SP_VOICE_IDENTIFIER, configuration.isVoiceCommands());
+        editor.putBoolean(Constants.SP_REMEMBER_IDENTIFIER, configuration.isRememberConfig());
+        editor.putBoolean(Constants.SP_LAYOUT_IDENTIFIER, configuration.isSimpleLayout());
 
         editor.apply();
     }
 
+    public Configuration getRememberedConfiguration() {
+
+        Configuration configuration = new Configuration.Builder()
+                .location(getLocation())
+                .subreddit(getSubreddit())
+                .pollingDelay(getPollingDelay())
+                .serverAddress(getServerAddress())
+                .celsius(getCelsius())
+                .rememberConfig(getRememberConfiguration())
+                .voiceCommands(getVoiceCommands())
+                .simpleLayout(getSimpleLayout())
+                .build();
+
+        return configuration;
+    }
+
     public String getLocation() {
-        return getPreferencesManager().getString(Constants.SP_LOCATION_IDENTIFIER, null);
+        return preferences.getString(Constants.SP_LOCATION_IDENTIFIER, null);
     }
 
     public String getSubreddit() {
-        return getPreferencesManager().getString(Constants.SP_SUBREDDIT_IDENTIFIER, null);
+        return preferences.getString(Constants.SP_SUBREDDIT_IDENTIFIER, null);
     }
 
     public int getPollingDelay() {
-        return getPreferencesManager().getInt(Constants.SP_POLLING_IDENTIFIER, 0);
+        return preferences.getInt(Constants.SP_POLLING_IDENTIFIER, 0);
     }
 
     public String getServerAddress() {
-        return getPreferencesManager().getString(Constants.SP_SERVER_IDENTIFIER, null);
+        return preferences.getString(Constants.SP_SERVER_IDENTIFIER, null);
     }
 
     public boolean getCelsius() {
-        return getPreferencesManager().getBoolean(Constants.SP_CELSIUS_IDENTIFIER, false);
+        return preferences.getBoolean(Constants.SP_CELSIUS_IDENTIFIER, false);
     }
 
     public boolean getVoiceCommands() {
-        return getPreferencesManager().getBoolean(Constants.SP_VOICE_IDENTIFIER, false);
+        return preferences.getBoolean(Constants.SP_VOICE_IDENTIFIER, false);
     }
 
     public boolean getRememberConfiguration() {
-        return getPreferencesManager().getBoolean(Constants.SP_REMEMBER_IDENTIFIER, false);
+        return preferences.getBoolean(Constants.SP_REMEMBER_IDENTIFIER, false);
     }
+
     public boolean getSimpleLayout() {
-        return getPreferencesManager().getBoolean(Constants.SP_LAYOUT_IDENTIFIER, false);
+        return preferences.getBoolean(Constants.SP_LAYOUT_IDENTIFIER, false);
     }
 
     public void removeConfiguration() {
 
-        SharedPreferences.Editor editor = getPreferencesManager().edit();
+        SharedPreferences.Editor editor = preferences.edit();
 
         editor.remove(Constants.SP_LOCATION_IDENTIFIER);
         editor.remove(Constants.SP_SUBREDDIT_IDENTIFIER);

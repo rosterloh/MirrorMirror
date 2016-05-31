@@ -3,10 +3,12 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     repositories {
         jcenter()
+        mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-alpha1'
-        classpath 'com.google.gms:google-services:2.1.0-alpha1'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.google.gms:google-services:3.0.0'
         // run gradle dependencyUpdates -Drevision=release @see https://github.com/ben-manes/gradle-versions-plugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
@@ -15,6 +17,11 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        mavenLocal()
         maven { url "https://jitpack.io" }
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

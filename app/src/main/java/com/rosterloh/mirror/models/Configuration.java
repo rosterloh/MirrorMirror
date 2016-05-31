@@ -1,14 +1,13 @@
 package com.rosterloh.mirror.models;
 
-import java.io.Serializable;
-
-public class Configuration implements Serializable {
+public class Configuration {
 
     private boolean celsius;
     private String location;
     private String subreddit;
     private int pollingDelay;
     private String serverAddress;
+    private boolean rememberConfig;
     private boolean voiceCommands;
     private boolean simpleLayout;
 
@@ -19,6 +18,7 @@ public class Configuration implements Serializable {
         private String subreddit;
         private int pollingDelay;
         private String serverAddress;
+        private boolean rememberConfig;
         private boolean voiceCommands;
         private boolean simpleLayout;
 
@@ -47,6 +47,11 @@ public class Configuration implements Serializable {
             return this;
         }
 
+        public Builder rememberConfig(boolean rememberConfig) {
+            this.rememberConfig = rememberConfig;
+            return this;
+        }
+
         public Builder voiceCommands(boolean voiceCommands) {
             this.voiceCommands = voiceCommands;
             return this;
@@ -70,6 +75,7 @@ public class Configuration implements Serializable {
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
         this.serverAddress = builder.serverAddress;
+        this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
         this.simpleLayout = builder.simpleLayout;
     }
@@ -78,12 +84,24 @@ public class Configuration implements Serializable {
         return celsius;
     }
 
+    public void setCelsius(boolean celsius) {
+        this.celsius = celsius;
+    }
+
     public String getLocation() {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getSubreddit() {
         return subreddit;
+    }
+
+    public void setSubreddit(String subreddit) {
+        this.subreddit = subreddit;
     }
 
     public int getPollingDelay() {
@@ -92,11 +110,31 @@ public class Configuration implements Serializable {
 
     public String getServerAddress() { return serverAddress; }
 
-    public boolean getVoiceCommands() {
+    public void setPollingDelay(int pollingDelay) {
+        this.pollingDelay = pollingDelay;
+    }
+
+    public boolean isVoiceCommands() {
         return voiceCommands;
+    }
+
+    public void setVoiceCommands(boolean voiceCommands) {
+        this.voiceCommands = voiceCommands;
     }
 
     public boolean isSimpleLayout() {
         return simpleLayout;
+    }
+
+    public void setSimpleLayout(boolean simpleLayout) {
+        this.simpleLayout = simpleLayout;
+    }
+
+    public boolean isRememberConfig() {
+        return rememberConfig;
+    }
+
+    public void setRememberConfig(boolean rememberConfig) {
+        this.rememberConfig = rememberConfig;
     }
 }

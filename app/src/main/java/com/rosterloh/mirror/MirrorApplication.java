@@ -1,36 +1,52 @@
 package com.rosterloh.mirror;
 
 import android.app.Application;
-import android.content.Context;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
+import com.rosterloh.mirror.di.component.ApplicationComponent;
+import com.rosterloh.mirror.di.component.DaggerApplicationComponent;
+import com.rosterloh.mirror.di.component.MainComponent;
+import com.rosterloh.mirror.di.component.SetupComponent;
+import com.rosterloh.mirror.di.module.AppModule;
+import com.rosterloh.mirror.di.module.MainModule;
+import com.rosterloh.mirror.di.module.ServiceModule;
+import com.rosterloh.mirror.di.module.SetupModule;
+import com.rosterloh.mirror.di.module.StorageModule;
+import com.rosterloh.mirror.di.module.UtilModule;
+import com.rosterloh.mirror.views.MainView;
+import com.rosterloh.mirror.views.SetupView;
 
 public class MirrorApplication extends Application {
 
-    private static Context context;
-    private Tracker mTracker;
-
-    /**
-     * Gets the default {@link Tracker} for this {@link Application}.
-     * @return tracker
-     */
-    synchronized public Tracker getDefaultTracker() {
-        if (mTracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-            mTracker = analytics.newTracker(R.xml.global_tracker);
-        }
-        return mTracker;
-    }
+    private ApplicationComponent applicationComponent;
+    private SetupComponent setupComponent;
+    private MainComponent mainComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        MirrorApplication.context = getApplicationContext();
+        applicationComponent = DaggerApplicationComponent.builder()
+                .appModule(new AppModule(this))
+                .serviceModule(new ServiceModule())
+                .storageModule(new StorageModule())
+                .utilModule(new UtilModule())
+                .build();
     }
 
-    public static Context getContext() {
-        return MirrorApplication.context;
+    public SetupComponent createSetupComponent(SetupView view) {
+        setupComponent = applicationComponent.plus(new SetupModule(view));
+        return setupComponent;
+    }
+
+    public MainComponent createMainComponent(MainView view) {
+        mainComponent = applicationComponent.plus(new MainModule(view));
+        return mainComponent;
+    }
+
+    public void releaseSetupComponent() {
+        setupComponent = null;
+    }
+
+    public void releaseMainComponent() {
+        mainComponent = null;
     }
 }

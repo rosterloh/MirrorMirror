@@ -1,15 +1,49 @@
+ext {
+    configuration = [
+            package             : "com.rosterloh.mirror",
+            buildToolsVersion   : "23.0.3",
+            compileVersion      : 23,
+            minSdk              : 19,
+            targetSdk           : 23,
+            version_code        : 1,
+            version_name        : "0.0.1",
+    ]
+
+    libraries = [
+            supportVersion      : "23.4.0",
+            playServices        : "9.0.2",
+            dagger              : "2.4",
+            rxjava              : "1.1.5",
+            rxandroid           : "1.2.0",
+            retrofit            : "2.0.2",
+            butterknife         : "8.0.1",
+            javaxAnnotation     : "10.0-b28",
+            okhttp              : "3.3.1",
+            picasso             : "2.5.2",
+            materialDialogs     : "0.8.5.9",
+            assent              : "0.2.2"
+    ]
+
+    testingLibraries = [
+            junit               : "4.12",
+            mockito             : "1.10.19",
+            espresso            : "2.2.2",
+            espressoRunner      : "0.5",
+            espressoRules       : "0.5"
+    ]
+}
+
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     repositories {
         jcenter()
-        mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
         classpath 'com.google.gms:google-services:3.0.0'
-        // run gradle dependencyUpdates -Drevision=release @see https://github.com/ben-manes/gradle-versions-plugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
 }
@@ -17,8 +51,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenLocal()
-        maven { url "https://jitpack.io" }
     }
 }
 

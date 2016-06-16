@@ -1,22 +1,22 @@
 ext {
     configuration = [
             package             : "com.rosterloh.mirror",
-            buildToolsVersion   : "23.0.3",
-            compileVersion      : 23,
+            buildToolsVersion   : "24.0.0",
+            compileVersion      : 24,
             minSdk              : 19,
-            targetSdk           : 23,
+            targetSdk           : 24,
             version_code        : 1,
             version_name        : "0.0.1",
     ]
 
     libraries = [
-            supportVersion      : "23.4.0",
+            supportVersion      : "24.0.0",
             playServices        : "9.0.2",
-            dagger              : "2.4",
-            rxjava              : "1.1.5",
+            dagger              : "2.5",
+            rxjava              : "1.1.6",
             rxandroid           : "1.2.0",
-            retrofit            : "2.0.2",
-            butterknife         : "8.0.1",
+            retrofit            : "2.1.0",
+            butterknife         : "8.1.0",
             javaxAnnotation     : "10.0-b28",
             okhttp              : "3.3.1",
             picasso             : "2.5.2",

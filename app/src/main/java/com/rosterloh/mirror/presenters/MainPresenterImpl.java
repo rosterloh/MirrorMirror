@@ -60,11 +60,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                 initSpeechRecognitionService();
                 setupTts();
             }
-            if (!configuration.isSimpleLayout()) {
-                startReddit();
-                if (hasAccessToCalendar) {
-                    startCalendar();
-                }
+            startReddit();
+            if (hasAccessToCalendar) {
+                startCalendar();
             }
         }
     }
@@ -73,10 +71,8 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         interactor.unSubscribe();
         if (null != configuration) {
             startWeather();
-            if (!configuration.isSimpleLayout()) {
-                startReddit();
-                startCalendar();
-            }
+            startReddit();
+            startCalendar();
         }
     }
 
@@ -342,7 +338,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
         @Override
         public void onNext(Weather weather) {
-            view.displayCurrentWeather(weather, configuration.isSimpleLayout());
+            view.displayCurrentWeather(weather);
         }
     }
 

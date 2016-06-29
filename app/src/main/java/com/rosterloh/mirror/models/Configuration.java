@@ -9,7 +9,6 @@ public class Configuration {
     private String serverAddress;
     private boolean rememberConfig;
     private boolean voiceCommands;
-    private boolean simpleLayout;
 
     public static class Builder {
 
@@ -77,7 +76,6 @@ public class Configuration {
         this.serverAddress = builder.serverAddress;
         this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
-        this.simpleLayout = builder.simpleLayout;
     }
 
     public boolean isCelsius() {
@@ -120,14 +118,6 @@ public class Configuration {
 
     public void setVoiceCommands(boolean voiceCommands) {
         this.voiceCommands = voiceCommands;
-    }
-
-    public boolean isSimpleLayout() {
-        return simpleLayout;
-    }
-
-    public void setSimpleLayout(boolean simpleLayout) {
-        this.simpleLayout = simpleLayout;
     }
 
     public boolean isRememberConfig() {

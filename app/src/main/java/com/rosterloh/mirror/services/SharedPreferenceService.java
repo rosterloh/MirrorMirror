@@ -27,7 +27,6 @@ public class SharedPreferenceService {
         editor.putBoolean(Constants.SP_CELSIUS_IDENTIFIER, configuration.isCelsius());
         editor.putBoolean(Constants.SP_VOICE_IDENTIFIER, configuration.isVoiceCommands());
         editor.putBoolean(Constants.SP_REMEMBER_IDENTIFIER, configuration.isRememberConfig());
-        editor.putBoolean(Constants.SP_LAYOUT_IDENTIFIER, configuration.isSimpleLayout());
 
         editor.apply();
     }
@@ -42,7 +41,6 @@ public class SharedPreferenceService {
                 .celsius(getCelsius())
                 .rememberConfig(getRememberConfiguration())
                 .voiceCommands(getVoiceCommands())
-                .simpleLayout(getSimpleLayout())
                 .build();
 
         return configuration;
@@ -76,10 +74,6 @@ public class SharedPreferenceService {
         return preferences.getBoolean(Constants.SP_REMEMBER_IDENTIFIER, false);
     }
 
-    public boolean getSimpleLayout() {
-        return preferences.getBoolean(Constants.SP_LAYOUT_IDENTIFIER, false);
-    }
-
     public void removeConfiguration() {
 
         SharedPreferences.Editor editor = preferences.edit();
@@ -91,7 +85,6 @@ public class SharedPreferenceService {
         editor.remove(Constants.SP_CELSIUS_IDENTIFIER);
         editor.remove(Constants.SP_VOICE_IDENTIFIER);
         editor.remove(Constants.SP_REMEMBER_IDENTIFIER);
-        editor.remove(Constants.SP_LAYOUT_IDENTIFIER);
 
         editor.apply();
     }

@@ -56,8 +56,8 @@ android {
         noCompress 'apk'
     }
 
-    packagingOptions {
-        exclude 'META-INF/services/javax.annotation.processing.Processor' // butterknife
+    dataBinding {
+        enabled true
     }
 }
 
@@ -78,9 +78,6 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:${libs.retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${libs.retrofit}"
     compile "com.squareup.picasso:picasso:${libs.picasso}"
-
-    compile "com.jakewharton:butterknife:${libs.butterknife}"
-    apt "com.jakewharton:butterknife-compiler:${libs.butterknife}"
 
     compile "io.reactivex:rxandroid:${libs.rxandroid}"
     compile "io.reactivex:rxjava:${libs.rxjava}"

@@ -96,5 +96,4 @@ public final class Constants {
     public static final String SP_CELSIUS_IDENTIFIER = "celsius";
     public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
     public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
-    public static final String SP_LAYOUT_IDENTIFIER = "simpleLayout";
 }

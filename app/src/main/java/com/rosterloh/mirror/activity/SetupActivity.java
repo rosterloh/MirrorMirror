@@ -3,21 +3,19 @@ package com.rosterloh.mirror.activity;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
 import com.rosterloh.mirror.MirrorApplication;
 import com.rosterloh.mirror.R;
+import com.rosterloh.mirror.databinding.ActivitySetupBinding;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.presenters.SetupPresenter;
 import com.rosterloh.mirror.util.ASFObjectStore;
@@ -26,22 +24,10 @@ import com.rosterloh.mirror.views.SetupView;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class SetupActivity extends AppCompatActivity implements SetupView,
             View.OnSystemUiVisibilityChangeListener, CompoundButton.OnCheckedChangeListener {
 
-    @BindView(R.id.et_location) EditText etLocation;
-    @BindView(R.id.et_subreddit) EditText etSubreddit;
-    @BindView(R.id.tv_reddit_title) TextView tvRedditTitle;
-    @BindView(R.id.et_polling_delay) EditText etPollingDelay;
-    @BindView(R.id.et_server_address) EditText etServerAddress;
-    @BindView(R.id.rb_celsius) RadioButton rbCelsius;
-    @BindView(R.id.rb_simple) RadioButton rbSimpleLayout;
-    @BindView(R.id.cb_voice_commands) CheckBox cbVoiceCommands;
-    @BindView(R.id.cb_remember_config) CheckBox cbRememberConfig;
+    private ActivitySetupBinding binding;
 
     @Inject
     SetupPresenter presenter;
@@ -54,9 +40,8 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_setup);
         ((MirrorApplication) getApplication()).createSetupComponent(this).inject(this);
-        ButterKnife.bind(this);
         Assent.setActivity(this, this);
 
         if (!Assent.isPermissionGranted(Assent.READ_CALENDAR)) {
@@ -68,8 +53,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
             }, 1, Assent.READ_CALENDAR);
         }
 
-        cbVoiceCommands.setOnCheckedChangeListener(this);
-        rbSimpleLayout.setOnCheckedChangeListener(this);
+        binding.cbVoiceCommands.setOnCheckedChangeListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -86,17 +70,15 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
         decorView.setOnSystemUiVisibilityChangeListener(this);
     }
 
-    @OnClick(R.id.btn_launch)
-    public void launch() {
+    public void launch(View v) {
         presenter.validate(
-                etLocation.getText().toString(),
-                etSubreddit.getText().toString(),
-                etPollingDelay.getText().toString(),
-                etServerAddress.getText().toString(),
-                rbCelsius.isChecked(),
-                cbVoiceCommands.isChecked(),
-                cbRememberConfig.isChecked(),
-                rbSimpleLayout.isChecked());
+                binding.etLocation.getText().toString(),
+                binding.etSubreddit.getText().toString(),
+                binding.etPollingDelay.getText().toString(),
+                binding.etServerAddress.getText().toString(),
+                binding.rbCelsius.isChecked(),
+                binding.cbVoiceCommands.isChecked(),
+                binding.cbRememberConfig.isChecked());
     }
 
     @Override
@@ -161,18 +143,18 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                         // Permission granted or denied
                         if (!result.allPermissionsGranted()) {
                             Toast.makeText(SetupActivity.this, getString(R.string.no_permission_for_voice), Toast.LENGTH_SHORT).show();
-                            cbVoiceCommands.setChecked(false);
+                            binding.cbVoiceCommands.setChecked(false);
                         }
                     }, 2, Assent.RECORD_AUDIO);
                 }
             }
         } else {
             if (isChecked) {
-                etSubreddit.setVisibility(View.GONE);
-                tvRedditTitle.setVisibility(View.GONE);
+                binding.etSubreddit.setVisibility(View.GONE);
+                binding.tvRedditTitle.setVisibility(View.GONE);
             } else {
-                etSubreddit.setVisibility(View.VISIBLE);
-                tvRedditTitle.setVisibility(View.VISIBLE);
+                binding.etSubreddit.setVisibility(View.VISIBLE);
+                binding.tvRedditTitle.setVisibility(View.VISIBLE);
             }
         }
     }

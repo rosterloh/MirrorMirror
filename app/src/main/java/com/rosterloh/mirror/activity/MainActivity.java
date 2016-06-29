@@ -1,18 +1,14 @@
 package com.rosterloh.mirror.activity;
 
 import android.annotation.TargetApi;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.assent.Assent;
@@ -21,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rosterloh.mirror.MirrorApplication;
 import com.rosterloh.mirror.R;
+import com.rosterloh.mirror.databinding.ActivityMainBinding;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
@@ -30,54 +27,12 @@ import com.rosterloh.mirror.util.Constants;
 import com.rosterloh.mirror.views.MainView;
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindString;
-import butterknife.BindView;
-
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainView,
         View.OnSystemUiVisibilityChangeListener {
 
-    @BindView(R.id.iv_current_weather) ImageView ivWeatherCondition;;
-    @BindView(R.id.tv_current_temp) TextView tvWeatherTemperature;
-    @BindView(R.id.weather_layout) LinearLayout llWeatherLayout;
-    @BindView(R.id.tv_last_updated) TextView tvWeatherLastUpdated;
-    @BindView(R.id.iv_listening) ImageView ivListening;
-
-    @Nullable @BindView(R.id.tv_summary) TextView tvWeatherSummary;
-    @Nullable @BindView(R.id.weather_stats_layout) LinearLayout llWeatherStatsLayout;
-    @Nullable @BindView(R.id.calendar_layout) LinearLayout llCalendarLayout;
-    @Nullable @BindView(R.id.reddit_layout) RelativeLayout rlRedditLayout;
-    @Nullable @BindView(R.id.iv_forecast_weather1) ImageView ivDayOneIcon;
-    @Nullable @BindView(R.id.tv_forecast_temp1) TextView tvDayOneTemperature;
-    @Nullable @BindView(R.id.tv_forecast_date1) TextView tvDayOneDate;
-    @Nullable @BindView(R.id.iv_forecast_weather2) ImageView ivDayTwoIcon;
-    @Nullable @BindView(R.id.tv_forecast_temp2) TextView tvDayTwoTemperature;
-    @Nullable @BindView(R.id.tv_forecast_date2) TextView tvDayTwoDate;
-    @Nullable @BindView(R.id.iv_forecast_weather3) ImageView ivDayThreeIcon;
-    @Nullable @BindView(R.id.tv_forecast_temp3) TextView tvDayThreeTemperature;
-    @Nullable @BindView(R.id.tv_forecast_date3) TextView tvDayThreeDate;
-    @Nullable @BindView(R.id.iv_forecast_weather4) ImageView ivDayFourIcon;
-    @Nullable @BindView(R.id.tv_forecast_temp4) TextView tvDayFourTemperature;
-    @Nullable @BindView(R.id.tv_forecast_date4) TextView tvDayFourDate;
-    @Nullable @BindView(R.id.tv_stats_wind) TextView tvWeatherWind;
-    @Nullable @BindView(R.id.tv_stats_humidity) TextView tvWeatherHumidity;
-    @Nullable @BindView(R.id.tv_stats_pressure) TextView tvWeatherPressure;
-    @Nullable @BindView(R.id.tv_stats_visibility) TextView tvWeatherVisibility;
-    @Nullable @BindView(R.id.tv_calendar_event) TextView tvCalendarEvent;
-    @Nullable @BindView(R.id.tv_reddit_post_title) TextView tvRedditPostTitle;
-    @Nullable @BindView(R.id.tv_reddit_post_votes) TextView tvRedditPostVotes;
-
-    @BindString(R.string.old_config_found_snackbar) String oldConfigFound;
-    @BindString(R.string.old_config_found_snackbar_back) String getOldConfigFoundBack;
-    @BindString(R.string.give_command) String giveCommand;
-    @BindString(R.string.listening) String listening;
-    @BindString(R.string.command_understood) String commandUnderstood;
-    @BindString(R.string.executing) String executing;
-    @BindString(R.string.last_updated) String lastUpdated;
-    @BindString(R.string.static_maps_api_key) String mapsApiKey;
+    private ActivityMainBinding binding;
 
     @Inject
     MainPresenter presenter;
@@ -94,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         ((MirrorApplication) getApplication()).createMainComponent(this).inject(this);
         Assent.setActivity(this, this);
 
@@ -102,13 +57,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
         Configuration configuration = objectStore.get();
         boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
-
-        ViewStub viewStub = configuration.isSimpleLayout() ?
-                (ViewStub) findViewById(R.id.stub_simple) :
-                (ViewStub) findViewById(R.id.stub_verbose);
-        if (null != viewStub) viewStub.inflate();
-
-        ButterKnife.bind(this);
 
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -145,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     private void showConfigurationSnackbar() {
         Snackbar snackbar = Snackbar
-                .make(llWeatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
+                .make(binding.weatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.old_config_found_snackbar_back), view -> {
                     onBackPressed();
                 });
@@ -169,12 +117,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @Override
     public void showListening() {
-        ivListening.setVisibility(View.VISIBLE);
+        binding.ivListening.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideListening() {
-        ivListening.setVisibility(View.INVISIBLE);
+        binding.ivListening.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -183,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         String url = Constants.STATIC_MAPS_URL_FIRST +
                 location + Constants.STATIC_MAPS_URL_SECOND +
                 location + Constants.STATIC_MAPS_URL_THIRD +
-                mapsApiKey;
+                getString(R.string.static_maps_api_key);
 
         mapDialog = new MaterialDialog.Builder(this)
                 .customView(R.layout.map_image, false)
@@ -206,55 +154,51 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @Override
     @SuppressWarnings("all")
-    public void displayCurrentWeather(Weather weather, boolean isSimpleLayout) {
+    public void displayCurrentWeather(Weather weather) {
 
-        this.ivWeatherCondition.setImageResource(weather.getIconId());
-        this.tvWeatherTemperature.setText(weather.getTemperature());
-        this.tvWeatherLastUpdated.setText(getString(R.string.last_updated) + " " + weather.getLastUpdated());
+        binding.ivCurrentWeather.setImageResource(weather.getIconId());
+        binding.tvCurrentTemp.setText(weather.getTemperature());
+        binding.tvLastUpdated.setText(getString(R.string.last_updated) + " " + weather.getLastUpdated());
 
-        if (!isSimpleLayout) {
-            this.tvWeatherWind.setText(weather.getWindInfo());
-            this.tvWeatherHumidity.setText(weather.getHumidityInfo());
-            this.tvWeatherPressure.setText(weather.getPressureInfo());
-            this.tvWeatherVisibility.setText(weather.getVisibilityInfo());
+        binding.tvStatsWind.setText(weather.getWindInfo());
+        binding.tvStatsHumidity.setText(weather.getHumidityInfo());
+        binding.tvStatsPressure.setText(weather.getPressureInfo());
+        binding.tvStatsVisibility.setText(weather.getVisibilityInfo());
 
-            this.tvDayOneDate.setText(weather.getForecast().get(0).getDate());
-            this.tvDayOneTemperature.setText(weather.getForecast().get(0).getTemperature());
-            this.ivDayOneIcon.setImageResource(weather.getForecast().get(0).getIconId());
-            this.tvDayTwoDate.setText(weather.getForecast().get(1).getDate());
-            this.tvDayTwoTemperature.setText(weather.getForecast().get(1).getTemperature());
-            this.ivDayTwoIcon.setImageResource(weather.getForecast().get(1).getIconId());
-            this.tvDayThreeDate.setText(weather.getForecast().get(2).getDate());
-            this.tvDayThreeTemperature.setText(weather.getForecast().get(2).getTemperature());
-            this.ivDayThreeIcon.setImageResource(weather.getForecast().get(2).getIconId());
-            this.tvDayFourDate.setText(weather.getForecast().get(3).getDate());
-            this.tvDayFourTemperature.setText(weather.getForecast().get(3).getTemperature());
-            this.ivDayFourIcon.setImageResource(weather.getForecast().get(2).getIconId());
-        } else {
-            this.tvWeatherSummary.setText(weather.getSummary());
-        }
+        binding.tvForecastDate1.setText(weather.getForecast().get(0).getDate());
+        binding.tvForecastTemp1.setText(weather.getForecast().get(0).getTemperature());
+        binding.ivForecastWeather1.setImageResource(weather.getForecast().get(0).getIconId());
+        binding.tvForecastDate2.setText(weather.getForecast().get(1).getDate());
+        binding.tvForecastTemp2.setText(weather.getForecast().get(1).getTemperature());
+        binding.ivForecastWeather2.setImageResource(weather.getForecast().get(1).getIconId());
+        binding.tvForecastDate3.setText(weather.getForecast().get(2).getDate());
+        binding.tvForecastTemp3.setText(weather.getForecast().get(2).getTemperature());
+        binding.ivForecastWeather3.setImageResource(weather.getForecast().get(2).getIconId());
+        binding.tvForecastDate4.setText(weather.getForecast().get(3).getDate());
+        binding.tvForecastTemp4.setText(weather.getForecast().get(3).getTemperature());
+        binding.ivForecastWeather4.setImageResource(weather.getForecast().get(2).getIconId());
 
-        if (this.llWeatherLayout.getVisibility() != View.VISIBLE) {
-            this.llWeatherLayout.setVisibility(View.VISIBLE);
-            this.llWeatherStatsLayout.setVisibility(View.VISIBLE);
+        if (binding.weatherLayout.getVisibility() != View.VISIBLE) {
+            binding.weatherLayout.setVisibility(View.VISIBLE);
+            binding.weatherStatsLayout.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     @SuppressWarnings("all")
     public void displayTopRedditPost(RedditPost redditPost) {
-        tvRedditPostTitle.setText(redditPost.getTitle());
-        tvRedditPostVotes.setText(redditPost.getUps() + "");
-        if (this.rlRedditLayout.getVisibility() != View.VISIBLE)
-            this.rlRedditLayout.setVisibility(View.VISIBLE);
+        binding.tvRedditPostTitle.setText(redditPost.getTitle());
+        binding.tvRedditPostVotes.setText(redditPost.getUps() + "");
+        if (binding.redditLayout.getVisibility() != View.VISIBLE)
+            binding.redditLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     @SuppressWarnings("all")
     public void displayLatestCalendarEvent(String event) {
-        this.tvCalendarEvent.setText(event);
-        if (this.llCalendarLayout.getVisibility() != View.VISIBLE)
-            this.llCalendarLayout.setVisibility(View.VISIBLE);
+        binding.tvCalendarEvent.setText(event);
+        if (binding.calendarLayout.getVisibility() != View.VISIBLE)
+            binding.calendarLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

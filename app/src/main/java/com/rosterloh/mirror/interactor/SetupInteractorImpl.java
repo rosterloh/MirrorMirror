@@ -37,17 +37,17 @@ public class SetupInteractorImpl implements SetupInteractor {
     }
 
     @Override
-    public void validate(String location, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig, boolean simpleLayout, Subscriber<Configuration> configurationSubscriber) {
+    public void validate(String location, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean simpleLayout, Subscriber<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
-            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, celsius, voiceCommands, rememberConfig, simpleLayout))
+            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, celsius, voiceCommands, simpleLayout))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(configurationSubscriber);
     }
 
-    private Observable<Configuration> generateConfiguration(String latLong, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig, boolean simpleLayout) {
+    private Observable<Configuration> generateConfiguration(String latLong, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig) {
 
         Configuration configuration = new Configuration.Builder()
             .location(latLong)
@@ -57,7 +57,6 @@ public class SetupInteractorImpl implements SetupInteractor {
             .celsius(celsius)
             .rememberConfig(rememberConfig)
             .voiceCommands(voiceCommands)
-            .simpleLayout(simpleLayout)
             .build();
 
         if (rememberConfig) {

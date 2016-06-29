@@ -27,7 +27,6 @@ public class SetupPresenterImpl implements SetupPresenter {
      * @param celsius        metric data or imperial
      * @param voiceCommands  should listen for voice commands
      * @param rememberConfig should remember configuration for next app start
-     * @param simpleLayout   simple or verbose layout
      */
     @Override
     public void validate(String location,
@@ -36,8 +35,7 @@ public class SetupPresenterImpl implements SetupPresenter {
                          String serverAddress,
                          boolean celsius,
                          boolean voiceCommands,
-                         boolean rememberConfig,
-                         boolean simpleLayout) {
+                         boolean rememberConfig) {
 
         interactor.validate(location,
                 subreddit,
@@ -46,7 +44,6 @@ public class SetupPresenterImpl implements SetupPresenter {
                 celsius,
                 voiceCommands,
                 rememberConfig,
-                simpleLayout,
                 new ConfigurationSubscriber());
     }
 

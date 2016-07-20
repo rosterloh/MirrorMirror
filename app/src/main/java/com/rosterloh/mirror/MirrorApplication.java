@@ -8,6 +8,7 @@ import com.rosterloh.mirror.di.component.MainComponent;
 import com.rosterloh.mirror.di.component.SetupComponent;
 import com.rosterloh.mirror.di.module.AppModule;
 import com.rosterloh.mirror.di.module.MainModule;
+import com.rosterloh.mirror.di.module.MqttModule;
 import com.rosterloh.mirror.di.module.ServiceModule;
 import com.rosterloh.mirror.di.module.SetupModule;
 import com.rosterloh.mirror.di.module.StorageModule;
@@ -28,6 +29,7 @@ public class MirrorApplication extends Application {
                 .appModule(new AppModule(this))
                 .serviceModule(new ServiceModule())
                 .storageModule(new StorageModule())
+                .mqttModule(new MqttModule())
                 .utilModule(new UtilModule())
                 .build();
     }

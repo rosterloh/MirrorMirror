@@ -13,11 +13,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class SetupInteractorImpl implements SetupInteractor {
-    Application application;
-    SharedPreferenceService preferenceService;
-    GoogleMapsService googleMapsService;
 
-    public SetupInteractorImpl(Application application, SharedPreferenceService preferenceService, GoogleMapsService googleMapsService) {
+    private Application application;
+    private SharedPreferenceService preferenceService;
+    private GoogleMapsService googleMapsService;
+
+    public SetupInteractorImpl(Application application,
+                               SharedPreferenceService preferenceService,
+                               GoogleMapsService googleMapsService) {
 
         this.application = application;
         this.preferenceService = preferenceService;
@@ -37,7 +40,14 @@ public class SetupInteractorImpl implements SetupInteractor {
     }
 
     @Override
-    public void validate(String location, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean simpleLayout, Subscriber<Configuration> configurationSubscriber) {
+    public void validate(String location,
+                         String subreddit,
+                         String pollingDelay,
+                         String serverAddress,
+                         boolean celsius,
+                         boolean voiceCommands,
+                         boolean simpleLayout,
+                         Subscriber<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
@@ -47,7 +57,13 @@ public class SetupInteractorImpl implements SetupInteractor {
             .subscribe(configurationSubscriber);
     }
 
-    private Observable<Configuration> generateConfiguration(String latLong, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig) {
+    private Observable<Configuration> generateConfiguration(String latLong,
+                                                            String subreddit,
+                                                            String pollingDelay,
+                                                            String serverAddress,
+                                                            boolean celsius,
+                                                            boolean voiceCommands,
+                                                            boolean rememberConfig) {
 
         Configuration configuration = new Configuration.Builder()
             .location(latLong)

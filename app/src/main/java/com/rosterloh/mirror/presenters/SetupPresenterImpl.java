@@ -33,6 +33,7 @@ public class SetupPresenterImpl implements SetupPresenter {
                          String subreddit,
                          String pollingDelay,
                          String serverAddress,
+                         String serverPort,
                          boolean celsius,
                          boolean voiceCommands,
                          boolean rememberConfig) {
@@ -41,6 +42,7 @@ public class SetupPresenterImpl implements SetupPresenter {
                 subreddit,
                 pollingDelay,
                 serverAddress,
+                serverPort,
                 celsius,
                 voiceCommands,
                 rememberConfig,

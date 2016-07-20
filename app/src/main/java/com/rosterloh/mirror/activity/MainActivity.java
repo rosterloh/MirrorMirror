@@ -3,10 +3,12 @@ package com.rosterloh.mirror.activity;
 import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -42,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     MaterialDialog mapDialog;
 
-    //MqttAndroidClient client;
-
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -65,30 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
             showConfigurationSnackbar();
 
         presenter.setConfiguration(configuration);
-        /*
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), configuration.getServerAddress(), clientId);
-
-        try {
-            IMqttToken token = client.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // We are connected
-                    Log.d(MainActivity.class.getSimpleName(), "Connected to MQTT");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d(MainActivity.class.getSimpleName(), "Failed to connect to MQTT");
-
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     private void showConfigurationSnackbar() {
@@ -202,6 +178,31 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
     @Override
+    public void handleMqttEvent(String payload) {
+
+        Bundle loggingParams = new Bundle();
+        Window window = this.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+
+        switch (payload) {
+            case "0":
+                loggingParams.putString("motion", "screen on");
+                layoutParams.screenBrightness = 0;
+                window.setAttributes(layoutParams);
+                break;
+            case "1":
+                loggingParams.putString("motion", "screen off");
+                layoutParams.screenBrightness = -1;
+                window.setAttributes(layoutParams);
+                break;
+            default:
+                loggingParams.putString("payload", payload);
+                break;
+        }
+        mFirebaseAnalytics.logEvent("mqtt", loggingParams);
+    }
+
+    @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -218,26 +219,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     protected void onPause() {
         super.onPause();
         presenter.finish();
-        /*
-        try {
-            IMqttToken disconToken = client.disconnect();
-            disconToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Log.d(MainActivity.class.getSimpleName(), "Disconnected from MQTT");
-                }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
-                    // something went wrong, but probably we are disconnected anyway
-                    Log.d(MainActivity.class.getSimpleName(), "Error disconnecting from MQTT");
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-        */
         if (isFinishing())
             Assent.setActivity(this, null);
     }

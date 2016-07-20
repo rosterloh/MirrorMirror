@@ -64,6 +64,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
             if (hasAccessToCalendar) {
                 startCalendar();
             }
+            initMqtt();
         }
     }
 
@@ -83,6 +84,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     @Override
     public void finish() {
+        interactor.getMqtt().disconnect();
         tearDownSpeechService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -134,6 +136,11 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     private void initSpeechRecognitionService() {
         interactor.getAssetsDirForSpeechRecognizer(new AssetSubscriber());
+    }
+
+    private void initMqtt() {
+        interactor.getMqtt().connect(configuration.getServerAddress(), configuration.getServerPort(), null, null, false, false);
+        interactor.addMqttSubscriber(new MqttEventSubscriber());
     }
 
     private void setupTts() {
@@ -389,6 +396,22 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         @Override
         public void onNext(File assetDir) {
             setupRecognizer(assetDir);
+        }
+    }
+
+    private final class MqttEventSubscriber extends Subscriber<String> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(String payload) {
+            view.handleMqttEvent(payload);
         }
     }
 }

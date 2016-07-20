@@ -13,11 +13,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class SetupInteractorImpl implements SetupInteractor {
-    Application application;
-    SharedPreferenceService preferenceService;
-    GoogleMapsService googleMapsService;
 
-    public SetupInteractorImpl(Application application, SharedPreferenceService preferenceService, GoogleMapsService googleMapsService) {
+    private Application application;
+    private SharedPreferenceService preferenceService;
+    private GoogleMapsService googleMapsService;
+
+    public SetupInteractorImpl(Application application,
+                               SharedPreferenceService preferenceService,
+                               GoogleMapsService googleMapsService) {
 
         this.application = application;
         this.preferenceService = preferenceService;
@@ -37,23 +40,39 @@ public class SetupInteractorImpl implements SetupInteractor {
     }
 
     @Override
-    public void validate(String location, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean simpleLayout, Subscriber<Configuration> configurationSubscriber) {
+    public void validate(String location,
+                         String subreddit,
+                         String pollingDelay,
+                         String serverAddress,
+                         String serverPort,
+                         boolean celsius,
+                         boolean voiceCommands,
+                         boolean simpleLayout,
+                         Subscriber<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
-            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, celsius, voiceCommands, simpleLayout))
+            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, serverPort, celsius, voiceCommands, simpleLayout))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(configurationSubscriber);
     }
 
-    private Observable<Configuration> generateConfiguration(String latLong, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig) {
+    private Observable<Configuration> generateConfiguration(String latLong,
+                                                            String subreddit,
+                                                            String pollingDelay,
+                                                            String serverAddress,
+                                                            String serverPort,
+                                                            boolean celsius,
+                                                            boolean voiceCommands,
+                                                            boolean rememberConfig) {
 
         Configuration configuration = new Configuration.Builder()
             .location(latLong)
             .subreddit(subreddit.isEmpty() ? Constants.SUBREDDIT_DEFAULT : subreddit)
             .pollingDelay((pollingDelay.equals("") || pollingDelay.equals("0")) ? Integer.parseInt(Constants.POLLING_DELAY_DEFAULT) : Integer.parseInt(pollingDelay))
             .serverAddress(serverAddress.isEmpty() ? Constants.SERVER_DEFAULT : serverAddress)
+            .serverPort((serverPort.equals("") || serverPort.equals("0")) ? Integer.parseInt(Constants.PORT_DEFAULT) : Integer.parseInt(serverPort))
             .celsius(celsius)
             .rememberConfig(rememberConfig)
             .voiceCommands(voiceCommands)

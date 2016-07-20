@@ -76,6 +76,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                 binding.etSubreddit.getText().toString(),
                 binding.etPollingDelay.getText().toString(),
                 binding.etServerAddress.getText().toString(),
+                binding.etServerPort.getText().toString(),
                 binding.rbCelsius.isChecked(),
                 binding.cbVoiceCommands.isChecked(),
                 binding.cbRememberConfig.isChecked());

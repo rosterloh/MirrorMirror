@@ -38,7 +38,8 @@ public final class Constants {
     public static final String LOCATION_DEFAULT = "London";
     public static final String SUBREDDIT_DEFAULT = "news";
     public static final String POLLING_DELAY_DEFAULT = "30";
-    public static final String SERVER_DEFAULT = "tcp://localhost:1883";
+    public static final String SERVER_DEFAULT = "localhost";
+    public static final String PORT_DEFAULT = "1883";
 
     /**
      * Intent identifiers
@@ -93,6 +94,7 @@ public final class Constants {
     public static final String SP_SUBREDDIT_IDENTIFIER = "subreddit";
     public static final String SP_POLLING_IDENTIFIER = "pollingDelay";
     public static final String SP_SERVER_IDENTIFIER = "serverAddress";
+    public static final String SP_PORT_IDENTIFIER = "serverPort";
     public static final String SP_CELSIUS_IDENTIFIER = "celsius";
     public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
     public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";

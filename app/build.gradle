@@ -61,6 +61,10 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // Android
@@ -87,10 +91,12 @@ dependencies {
     provided "org.glassfish:javax.annotation:${libs.javaxAnnotation}"
 
     compile "com.afollestad.material-dialogs:core:${libs.materialDialogs}"
-    compile("com.afollestad:assent:${libs.assent}")
-    {
+    compile("com.afollestad:assent:${libs.assent}") {
         transitive = true
     }
+
+    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${libs.pahoMqtt}"
+    compile "org.eclipse.paho:org.eclipse.paho.android.service:${libs.pahoMqtt}"
 
     // Test
     testCompile "junit:junit:${test.junit}"

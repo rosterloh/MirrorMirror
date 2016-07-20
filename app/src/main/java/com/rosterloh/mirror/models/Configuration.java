@@ -7,6 +7,7 @@ public class Configuration {
     private String subreddit;
     private int pollingDelay;
     private String serverAddress;
+    private int serverPort;
     private boolean rememberConfig;
     private boolean voiceCommands;
 
@@ -17,6 +18,7 @@ public class Configuration {
         private String subreddit;
         private int pollingDelay;
         private String serverAddress;
+        private int serverPort;
         private boolean rememberConfig;
         private boolean voiceCommands;
         private boolean simpleLayout;
@@ -43,6 +45,11 @@ public class Configuration {
 
         public Builder serverAddress(String serverAddress) {
             this.serverAddress = serverAddress;
+            return this;
+        }
+
+        public Builder serverPort(int serverPort) {
+            this.serverPort = serverPort;
             return this;
         }
 
@@ -74,6 +81,7 @@ public class Configuration {
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
         this.serverAddress = builder.serverAddress;
+        this.serverPort = builder.serverPort;
         this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
     }
@@ -107,6 +115,8 @@ public class Configuration {
     }
 
     public String getServerAddress() { return serverAddress; }
+
+    public int getServerPort() { return serverPort; }
 
     public void setPollingDelay(int pollingDelay) {
         this.pollingDelay = pollingDelay;

@@ -5,3 +5,5 @@
 -keepattributes Exceptions
 # For gradle-retrolambda
 -dontwarn java.lang.invoke.*
+
+-keep class android.databinding.** { *; }

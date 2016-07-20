@@ -6,7 +6,7 @@ import rx.Subscriber;
 
 public interface SetupInteractor {
 
-    void validate(String location, String subreddit, String pollingDelay, String serverAddress, boolean celsius, boolean voiceCommands, boolean rememberConfig, Subscriber<Configuration> configurationSubscriber);
+    void validate(String location, String subreddit, String pollingDelay, String serverAddress, String serverPort, boolean celsius, boolean voiceCommands, boolean rememberConfig, Subscriber<Configuration> configurationSubscriber);
 
     void start(Subscriber<Configuration> configurationSubscriber);
 }

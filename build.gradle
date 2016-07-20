@@ -1,27 +1,28 @@
 ext {
     configuration = [
             package             : "com.rosterloh.mirror",
-            buildToolsVersion   : "24.0.0",
+            buildToolsVersion   : "24.0.1",
             compileVersion      : 24,
             minSdk              : 19,
             targetSdk           : 24,
-            version_code        : 1,
-            version_name        : "0.0.1",
+            version_code        : 2,
+            version_name        : "0.0.2",
     ]
 
     libraries = [
-            supportVersion      : "24.0.0",
-            playServices        : "9.2.0",
+            supportVersion      : "24.1.1",
+            playServices        : "9.2.1",
             dagger              : "2.5",
-            rxjava              : "1.1.7",
+            rxjava              : "1.1.8",
             rxandroid           : "1.2.1",
             retrofit            : "2.1.0",
             butterknife         : "8.1.0",
             javaxAnnotation     : "10.0-b28",
             okhttp              : "3.3.1",
             picasso             : "2.5.2",
-            materialDialogs     : "0.8.6.1",
-            assent              : "0.2.4"
+            materialDialogs     : "0.8.6.2",
+            assent              : "0.2.4",
+            pahoMqtt            : "1.1.1-SNAPSHOT"
     ]
 
     testingLibraries = [
@@ -40,7 +41,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
         classpath 'com.google.gms:google-services:3.0.0'

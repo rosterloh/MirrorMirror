@@ -9,6 +9,7 @@ import com.rosterloh.mirror.presenters.MainPresenter;
 import com.rosterloh.mirror.presenters.MainPresenterImpl;
 import com.rosterloh.mirror.services.ForecastIOService;
 import com.rosterloh.mirror.services.GoogleCalendarService;
+import com.rosterloh.mirror.services.MqttService;
 import com.rosterloh.mirror.services.RedditService;
 import com.rosterloh.mirror.util.WeatherIconGenerator;
 import com.rosterloh.mirror.views.MainView;
@@ -36,11 +37,13 @@ public class MainModule {
     @Provides
     @PerActivity
     public MainInteractor provideMainInteractor(Application application,
-                                                     ForecastIOService forecastIOService,
-                                                     GoogleCalendarService googleMapService,
-                                                     RedditService redditService,
-                                                     WeatherIconGenerator iconGenerator) {
+                                                ForecastIOService forecastIOService,
+                                                GoogleCalendarService googleMapService,
+                                                RedditService redditService,
+                                                WeatherIconGenerator iconGenerator,
+                                                MqttService mqttService) {
 
-        return new MainInteractorImpl(application, forecastIOService, googleMapService, redditService, iconGenerator);
+        return new MainInteractorImpl(application, forecastIOService, googleMapService,
+                                      redditService, iconGenerator, mqttService);
     }
 }

@@ -7,6 +7,7 @@ import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
 import com.rosterloh.mirror.services.ForecastIOService;
 import com.rosterloh.mirror.services.GoogleCalendarService;
+import com.rosterloh.mirror.services.MqttService;
 import com.rosterloh.mirror.services.RedditService;
 import com.rosterloh.mirror.util.Constants;
 import com.rosterloh.mirror.util.WeatherIconGenerator;
@@ -30,11 +31,14 @@ public class MainInteractorImpl implements MainInteractor {
     private RedditService redditService;
     private WeatherIconGenerator weatherIconGenerator;
     private CompositeSubscription compositeSubscription;
+    private MqttService mqttService;
 
-    public MainInteractorImpl(Application application, ForecastIOService forecastIOService,
+    public MainInteractorImpl(Application application,
+                              ForecastIOService forecastIOService,
                               GoogleCalendarService googleCalendarService,
                               RedditService redditService,
-                              WeatherIconGenerator weatherIconGenerator) {
+                              WeatherIconGenerator weatherIconGenerator,
+                              MqttService mqttService) {
 
         this.application = application;
         this.forecastIOService = forecastIOService;
@@ -42,6 +46,7 @@ public class MainInteractorImpl implements MainInteractor {
         this.redditService = redditService;
         this.weatherIconGenerator = weatherIconGenerator;
         this.compositeSubscription = new CompositeSubscription();
+        this.mqttService = mqttService;
     }
 
     @Override
@@ -56,7 +61,9 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     @Override
-    public void loadTopRedditPost(String subreddit, int updateDelay, Subscriber<RedditPost> subscriber) {
+    public void loadTopRedditPost(String subreddit,
+                                  int updateDelay,
+                                  Subscriber<RedditPost> subscriber) {
 
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
             .flatMap(ignore -> redditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
@@ -68,7 +75,11 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     @Override
-    public void loadWeather(String location, boolean celsius, int updateDelay, String apiKey, Subscriber<Weather> subscriber) {
+    public void loadWeather(String location,
+                            boolean celsius,
+                            int updateDelay,
+                            String apiKey,
+                            Subscriber<Weather> subscriber) {
 
         final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
 
@@ -80,7 +91,6 @@ public class MainInteractorImpl implements MainInteractor {
             .unsubscribeOn(Schedulers.io())
             .subscribe(subscriber));
     }
-
 
     @Override
     public void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber) {
@@ -107,5 +117,11 @@ public class MainInteractorImpl implements MainInteractor {
             compositeSubscription.unsubscribe();
         }
         compositeSubscription = new CompositeSubscription();
+    }
+
+    @Override
+    public MqttService getMqtt() {
+
+        return this.mqttService;
     }
 }

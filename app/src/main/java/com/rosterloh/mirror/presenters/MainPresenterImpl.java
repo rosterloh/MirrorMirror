@@ -64,6 +64,8 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
             if (hasAccessToCalendar) {
                 startCalendar();
             }
+            //configuration.getServerAddress()
+            interactor.getMqtt().connect("", 1883, null, null, false, false);
         }
     }
 
@@ -83,6 +85,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     @Override
     public void finish() {
+        interactor.getMqtt().disconnect();
         tearDownSpeechService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

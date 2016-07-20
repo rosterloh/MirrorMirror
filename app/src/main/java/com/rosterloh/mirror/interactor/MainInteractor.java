@@ -2,6 +2,7 @@ package com.rosterloh.mirror.interactor;
 
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
+import com.rosterloh.mirror.services.MqttService;
 
 import java.io.File;
 
@@ -18,4 +19,6 @@ public interface MainInteractor {
     void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber);
 
     void unSubscribe();
+
+    MqttService getMqtt();
 }

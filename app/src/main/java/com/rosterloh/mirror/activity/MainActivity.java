@@ -192,9 +192,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     protected void onPause() {
         super.onPause();
         presenter.finish();
-        /*
 
-        */
         if (isFinishing())
             Assent.setActivity(this, null);
     }

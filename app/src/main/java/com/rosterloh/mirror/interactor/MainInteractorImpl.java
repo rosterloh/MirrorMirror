@@ -92,7 +92,6 @@ public class MainInteractorImpl implements MainInteractor {
             .subscribe(subscriber));
     }
 
-
     @Override
     public void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber) {
 
@@ -118,5 +117,11 @@ public class MainInteractorImpl implements MainInteractor {
             compositeSubscription.unsubscribe();
         }
         compositeSubscription = new CompositeSubscription();
+    }
+
+    @Override
+    public MqttService getMqtt() {
+
+        return this.mqttService;
     }
 }

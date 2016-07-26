@@ -24,7 +24,7 @@ public class SetupPresenterImpl implements SetupPresenter {
      * @param subreddit      subreddit string
      * @param pollingDelay   update UI every x minutes
      * @param serverAddress  address of MQTT broker server
-     * @param celsius        metric data or imperial
+     * @param serverPort     port of MQTT broker server
      * @param voiceCommands  should listen for voice commands
      * @param rememberConfig should remember configuration for next app start
      */
@@ -34,7 +34,6 @@ public class SetupPresenterImpl implements SetupPresenter {
                          String pollingDelay,
                          String serverAddress,
                          String serverPort,
-                         boolean celsius,
                          boolean voiceCommands,
                          boolean rememberConfig) {
 
@@ -43,7 +42,6 @@ public class SetupPresenterImpl implements SetupPresenter {
                 pollingDelay,
                 serverAddress,
                 serverPort,
-                celsius,
                 voiceCommands,
                 rememberConfig,
                 new ConfigurationSubscriber());

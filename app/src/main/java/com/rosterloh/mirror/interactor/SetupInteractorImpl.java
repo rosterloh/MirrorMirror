@@ -45,14 +45,13 @@ public class SetupInteractorImpl implements SetupInteractor {
                          String pollingDelay,
                          String serverAddress,
                          String serverPort,
-                         boolean celsius,
                          boolean voiceCommands,
                          boolean simpleLayout,
                          Subscriber<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
-            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, serverPort, celsius, voiceCommands, simpleLayout))
+            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, serverPort, voiceCommands, simpleLayout))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(configurationSubscriber);
@@ -63,7 +62,6 @@ public class SetupInteractorImpl implements SetupInteractor {
                                                             String pollingDelay,
                                                             String serverAddress,
                                                             String serverPort,
-                                                            boolean celsius,
                                                             boolean voiceCommands,
                                                             boolean rememberConfig) {
 
@@ -73,7 +71,6 @@ public class SetupInteractorImpl implements SetupInteractor {
             .pollingDelay((pollingDelay.equals("") || pollingDelay.equals("0")) ? Integer.parseInt(Constants.POLLING_DELAY_DEFAULT) : Integer.parseInt(pollingDelay))
             .serverAddress(serverAddress.isEmpty() ? Constants.SERVER_DEFAULT : serverAddress)
             .serverPort((serverPort.equals("") || serverPort.equals("0")) ? Integer.parseInt(Constants.PORT_DEFAULT) : Integer.parseInt(serverPort))
-            .celsius(celsius)
             .rememberConfig(rememberConfig)
             .voiceCommands(voiceCommands)
             .build();

@@ -138,36 +138,6 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <TextView
-                        android:id="@+id/tv_temp_unit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/temperature_title"
-                        android:textSize="18sp" />
-
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/rb_celsius"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="@string/temperature_celsius" />
-
-                        <RadioButton
-                            android:id="@+id/rb_fahrenheit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:text="@string/temperature_fahrenheit" />
-
-                    </RadioGroup>
-
-                    <TextView
                         android:id="@+id/tv_reddit_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

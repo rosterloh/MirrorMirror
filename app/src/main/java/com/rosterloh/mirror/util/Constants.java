@@ -95,7 +95,6 @@ public final class Constants {
     public static final String SP_POLLING_IDENTIFIER = "pollingDelay";
     public static final String SP_SERVER_IDENTIFIER = "serverAddress";
     public static final String SP_PORT_IDENTIFIER = "serverPort";
-    public static final String SP_CELSIUS_IDENTIFIER = "celsius";
     public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
     public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
 }

@@ -2,7 +2,6 @@ package com.rosterloh.mirror.models;
 
 public class Configuration {
 
-    private boolean celsius;
     private String location;
     private String subreddit;
     private int pollingDelay;
@@ -13,7 +12,6 @@ public class Configuration {
 
     public static class Builder {
 
-        private boolean celsius;
         private String location;
         private String subreddit;
         private int pollingDelay;
@@ -22,11 +20,6 @@ public class Configuration {
         private boolean rememberConfig;
         private boolean voiceCommands;
         private boolean simpleLayout;
-
-        public Builder celsius(boolean celsius) {
-            this.celsius = celsius;
-            return this;
-        }
 
         public Builder location(String location) {
             this.location = location;
@@ -76,7 +69,6 @@ public class Configuration {
 
     private Configuration(Builder builder) {
 
-        this.celsius = builder.celsius;
         this.location = builder.location;
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
@@ -84,14 +76,6 @@ public class Configuration {
         this.serverPort = builder.serverPort;
         this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
-    }
-
-    public boolean isCelsius() {
-        return celsius;
-    }
-
-    public void setCelsius(boolean celsius) {
-        this.celsius = celsius;
     }
 
     public String getLocation() {

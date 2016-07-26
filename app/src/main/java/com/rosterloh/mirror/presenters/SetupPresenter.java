@@ -6,7 +6,7 @@ public interface SetupPresenter {
 
     void showError(String error);
 
-    void validate(String location, String subreddit, String pollingDelay, String serverAddress, String serverPort, boolean celsius, boolean voiceCommands, boolean rememberConfig);
+    void validate(String location, String subreddit, String pollingDelay, String serverAddress, String serverPort, boolean voiceCommands, boolean rememberConfig);
 
     void launchMainActivity(Configuration configuration);
 }

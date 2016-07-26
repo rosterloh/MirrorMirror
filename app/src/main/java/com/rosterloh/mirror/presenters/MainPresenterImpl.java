@@ -123,7 +123,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     }
 
     private void startWeather() {
-        interactor.loadWeather(configuration.getLocation(), configuration.isCelsius(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
+        interactor.loadWeather(configuration.getLocation(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
     }
 
     private void startReddit() {

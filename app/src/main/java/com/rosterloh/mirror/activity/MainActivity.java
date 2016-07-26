@@ -56,13 +56,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Configuration configuration = objectStore.get();
-        boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (didLoadOldConfig)
-            showConfigurationSnackbar();
+        showConfigurationSnackbar();
 
         presenter.setConfiguration(configuration);
     }

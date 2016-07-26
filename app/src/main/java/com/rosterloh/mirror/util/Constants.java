@@ -42,11 +42,6 @@ public final class Constants {
     public static final String PORT_DEFAULT = "1883";
 
     /**
-     * Intent identifiers
-     */
-    public static final String SAVED_CONFIGURATION_IDENTIFIER = "savedConf";
-
-    /**
      * Formats
      */
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
@@ -96,5 +91,4 @@ public final class Constants {
     public static final String SP_SERVER_IDENTIFIER = "serverAddress";
     public static final String SP_PORT_IDENTIFIER = "serverPort";
     public static final String SP_VOICE_IDENTIFIER = "voiceCommands";
-    public static final String SP_REMEMBER_IDENTIFIER = "rememberConfiguration";
 }

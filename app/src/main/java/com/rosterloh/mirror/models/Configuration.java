@@ -7,7 +7,6 @@ public class Configuration {
     private int pollingDelay;
     private String serverAddress;
     private int serverPort;
-    private boolean rememberConfig;
     private boolean voiceCommands;
 
     public static class Builder {
@@ -17,9 +16,7 @@ public class Configuration {
         private int pollingDelay;
         private String serverAddress;
         private int serverPort;
-        private boolean rememberConfig;
         private boolean voiceCommands;
-        private boolean simpleLayout;
 
         public Builder location(String location) {
             this.location = location;
@@ -46,18 +43,8 @@ public class Configuration {
             return this;
         }
 
-        public Builder rememberConfig(boolean rememberConfig) {
-            this.rememberConfig = rememberConfig;
-            return this;
-        }
-
         public Builder voiceCommands(boolean voiceCommands) {
             this.voiceCommands = voiceCommands;
-            return this;
-        }
-
-        public Builder simpleLayout(boolean simpleLayout) {
-            this.simpleLayout = simpleLayout;
             return this;
         }
 
@@ -74,7 +61,6 @@ public class Configuration {
         this.pollingDelay = builder.pollingDelay;
         this.serverAddress = builder.serverAddress;
         this.serverPort = builder.serverPort;
-        this.rememberConfig = builder.rememberConfig;
         this.voiceCommands = builder.voiceCommands;
     }
 
@@ -112,13 +98,5 @@ public class Configuration {
 
     public void setVoiceCommands(boolean voiceCommands) {
         this.voiceCommands = voiceCommands;
-    }
-
-    public boolean isRememberConfig() {
-        return rememberConfig;
-    }
-
-    public void setRememberConfig(boolean rememberConfig) {
-        this.rememberConfig = rememberConfig;
     }
 }

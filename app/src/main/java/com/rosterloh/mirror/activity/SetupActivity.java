@@ -77,8 +77,7 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                 binding.etPollingDelay.getText().toString(),
                 binding.etServerAddress.getText().toString(),
                 binding.etServerPort.getText().toString(),
-                binding.cbVoiceCommands.isChecked(),
-                binding.cbRememberConfig.isChecked());
+                binding.cbVoiceCommands.isChecked());
     }
 
     @Override
@@ -97,7 +96,6 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
 
         Intent intent = new Intent(this, MainActivity.class);
         objectStore.setObject(configuration);
-        intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, configuration.isRememberConfig());
         startActivity(intent);
     }
 
@@ -147,14 +145,6 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                         }
                     }, 2, Assent.RECORD_AUDIO);
                 }
-            }
-        } else {
-            if (isChecked) {
-                binding.etSubreddit.setVisibility(View.GONE);
-                binding.tvRedditTitle.setVisibility(View.GONE);
-            } else {
-                binding.etSubreddit.setVisibility(View.VISIBLE);
-                binding.tvRedditTitle.setVisibility(View.VISIBLE);
             }
         }
     }

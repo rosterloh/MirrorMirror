@@ -26,7 +26,6 @@ public class SetupPresenterImpl implements SetupPresenter {
      * @param serverAddress  address of MQTT broker server
      * @param serverPort     port of MQTT broker server
      * @param voiceCommands  should listen for voice commands
-     * @param rememberConfig should remember configuration for next app start
      */
     @Override
     public void validate(String location,
@@ -34,8 +33,7 @@ public class SetupPresenterImpl implements SetupPresenter {
                          String pollingDelay,
                          String serverAddress,
                          String serverPort,
-                         boolean voiceCommands,
-                         boolean rememberConfig) {
+                         boolean voiceCommands) {
 
         interactor.validate(location,
                 subreddit,
@@ -43,7 +41,6 @@ public class SetupPresenterImpl implements SetupPresenter {
                 serverAddress,
                 serverPort,
                 voiceCommands,
-                rememberConfig,
                 new ConfigurationSubscriber());
     }
 

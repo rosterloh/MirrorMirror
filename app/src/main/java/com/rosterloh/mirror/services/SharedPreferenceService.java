@@ -26,7 +26,6 @@ public class SharedPreferenceService {
         editor.putString(Constants.SP_SERVER_IDENTIFIER, configuration.getServerAddress());
         editor.putInt(Constants.SP_PORT_IDENTIFIER, configuration.getServerPort());
         editor.putBoolean(Constants.SP_VOICE_IDENTIFIER, configuration.isVoiceCommands());
-        editor.putBoolean(Constants.SP_REMEMBER_IDENTIFIER, configuration.isRememberConfig());
 
         editor.apply();
     }
@@ -39,7 +38,6 @@ public class SharedPreferenceService {
                 .pollingDelay(getPollingDelay())
                 .serverAddress(getServerAddress())
                 .serverPort(getServerPort())
-                .rememberConfig(getRememberConfiguration())
                 .voiceCommands(getVoiceCommands())
                 .build();
 
@@ -70,10 +68,6 @@ public class SharedPreferenceService {
         return preferences.getBoolean(Constants.SP_VOICE_IDENTIFIER, false);
     }
 
-    public boolean getRememberConfiguration() {
-        return preferences.getBoolean(Constants.SP_REMEMBER_IDENTIFIER, false);
-    }
-
     public void removeConfiguration() {
 
         SharedPreferences.Editor editor = preferences.edit();
@@ -84,7 +78,6 @@ public class SharedPreferenceService {
         editor.remove(Constants.SP_SERVER_IDENTIFIER);
         editor.remove(Constants.SP_PORT_IDENTIFIER);
         editor.remove(Constants.SP_VOICE_IDENTIFIER);
-        editor.remove(Constants.SP_REMEMBER_IDENTIFIER);
 
         editor.apply();
     }

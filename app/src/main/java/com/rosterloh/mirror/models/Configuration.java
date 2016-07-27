@@ -2,29 +2,21 @@ package com.rosterloh.mirror.models;
 
 public class Configuration {
 
-    private boolean celsius;
     private String location;
     private String subreddit;
     private int pollingDelay;
     private String serverAddress;
-    private boolean rememberConfig;
+    private int serverPort;
     private boolean voiceCommands;
 
     public static class Builder {
 
-        private boolean celsius;
         private String location;
         private String subreddit;
         private int pollingDelay;
         private String serverAddress;
-        private boolean rememberConfig;
+        private int serverPort;
         private boolean voiceCommands;
-        private boolean simpleLayout;
-
-        public Builder celsius(boolean celsius) {
-            this.celsius = celsius;
-            return this;
-        }
 
         public Builder location(String location) {
             this.location = location;
@@ -46,18 +38,13 @@ public class Configuration {
             return this;
         }
 
-        public Builder rememberConfig(boolean rememberConfig) {
-            this.rememberConfig = rememberConfig;
+        public Builder serverPort(int serverPort) {
+            this.serverPort = serverPort;
             return this;
         }
 
         public Builder voiceCommands(boolean voiceCommands) {
             this.voiceCommands = voiceCommands;
-            return this;
-        }
-
-        public Builder simpleLayout(boolean simpleLayout) {
-            this.simpleLayout = simpleLayout;
             return this;
         }
 
@@ -69,21 +56,12 @@ public class Configuration {
 
     private Configuration(Builder builder) {
 
-        this.celsius = builder.celsius;
         this.location = builder.location;
         this.subreddit = builder.subreddit;
         this.pollingDelay = builder.pollingDelay;
         this.serverAddress = builder.serverAddress;
-        this.rememberConfig = builder.rememberConfig;
+        this.serverPort = builder.serverPort;
         this.voiceCommands = builder.voiceCommands;
-    }
-
-    public boolean isCelsius() {
-        return celsius;
-    }
-
-    public void setCelsius(boolean celsius) {
-        this.celsius = celsius;
     }
 
     public String getLocation() {
@@ -108,6 +86,8 @@ public class Configuration {
 
     public String getServerAddress() { return serverAddress; }
 
+    public int getServerPort() { return serverPort; }
+
     public void setPollingDelay(int pollingDelay) {
         this.pollingDelay = pollingDelay;
     }
@@ -118,13 +98,5 @@ public class Configuration {
 
     public void setVoiceCommands(boolean voiceCommands) {
         this.voiceCommands = voiceCommands;
-    }
-
-    public boolean isRememberConfig() {
-        return rememberConfig;
-    }
-
-    public void setRememberConfig(boolean rememberConfig) {
-        this.rememberConfig = rememberConfig;
     }
 }

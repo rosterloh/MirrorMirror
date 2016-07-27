@@ -10,10 +10,10 @@ ext {
     ]
 
     libraries = [
-            supportVersion      : "24.1.0",
+            supportVersion      : "24.1.1",
             playServices        : "9.2.1",
             dagger              : "2.5",
-            rxjava              : "1.1.7",
+            rxjava              : "1.1.8",
             rxandroid           : "1.2.1",
             retrofit            : "2.1.0",
             butterknife         : "8.1.0",

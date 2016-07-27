@@ -30,13 +30,10 @@ public class SetupInteractorImpl implements SetupInteractor {
     @Override
     public void start(Subscriber<Configuration> configurationSubscriber) {
 
-        if (preferenceService.getRememberConfiguration()) {
-
-            Observable.just(preferenceService.getRememberedConfiguration())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(configurationSubscriber);
-       }
+        Observable.just(preferenceService.getRememberedConfiguration())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(configurationSubscriber);
     }
 
     @Override
@@ -44,14 +41,13 @@ public class SetupInteractorImpl implements SetupInteractor {
                          String subreddit,
                          String pollingDelay,
                          String serverAddress,
-                         boolean celsius,
+                         String serverPort,
                          boolean voiceCommands,
-                         boolean simpleLayout,
                          Subscriber<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
-            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, celsius, voiceCommands, simpleLayout))
+            .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, serverPort, voiceCommands))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(configurationSubscriber);
@@ -61,27 +57,19 @@ public class SetupInteractorImpl implements SetupInteractor {
                                                             String subreddit,
                                                             String pollingDelay,
                                                             String serverAddress,
-                                                            boolean celsius,
-                                                            boolean voiceCommands,
-                                                            boolean rememberConfig) {
+                                                            String serverPort,
+                                                            boolean voiceCommands) {
 
         Configuration configuration = new Configuration.Builder()
             .location(latLong)
             .subreddit(subreddit.isEmpty() ? Constants.SUBREDDIT_DEFAULT : subreddit)
             .pollingDelay((pollingDelay.equals("") || pollingDelay.equals("0")) ? Integer.parseInt(Constants.POLLING_DELAY_DEFAULT) : Integer.parseInt(pollingDelay))
             .serverAddress(serverAddress.isEmpty() ? Constants.SERVER_DEFAULT : serverAddress)
-            .celsius(celsius)
-            .rememberConfig(rememberConfig)
+            .serverPort((serverPort.equals("") || serverPort.equals("0")) ? Integer.parseInt(Constants.PORT_DEFAULT) : Integer.parseInt(serverPort))
             .voiceCommands(voiceCommands)
             .build();
 
-        if (rememberConfig) {
-            preferenceService.storeConfiguration(configuration);
-        } else {
-            preferenceService.removeConfiguration();
-        }
-
-        configuration.setRememberConfig(false);
+        preferenceService.storeConfiguration(configuration);
 
         return Observable.just(configuration);
     }

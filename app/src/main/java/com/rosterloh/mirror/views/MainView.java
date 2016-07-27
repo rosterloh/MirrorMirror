@@ -18,4 +18,6 @@ public interface MainView extends BaseView {
     void displayLatestCalendarEvent(String event);
 
     void displayTopRedditPost(RedditPost redditPost);
+
+    void handleMqttEvent(String payload);
 }

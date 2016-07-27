@@ -19,7 +19,6 @@ import com.rosterloh.mirror.databinding.ActivitySetupBinding;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.presenters.SetupPresenter;
 import com.rosterloh.mirror.util.ASFObjectStore;
-import com.rosterloh.mirror.util.Constants;
 import com.rosterloh.mirror.views.SetupView;
 
 import javax.inject.Inject;
@@ -76,9 +75,8 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                 binding.etSubreddit.getText().toString(),
                 binding.etPollingDelay.getText().toString(),
                 binding.etServerAddress.getText().toString(),
-                binding.rbCelsius.isChecked(),
-                binding.cbVoiceCommands.isChecked(),
-                binding.cbRememberConfig.isChecked());
+                binding.etServerPort.getText().toString(),
+                binding.cbVoiceCommands.isChecked());
     }
 
     @Override
@@ -97,7 +95,6 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
 
         Intent intent = new Intent(this, MainActivity.class);
         objectStore.setObject(configuration);
-        intent.putExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, configuration.isRememberConfig());
         startActivity(intent);
     }
 
@@ -147,14 +144,6 @@ public class SetupActivity extends AppCompatActivity implements SetupView,
                         }
                     }, 2, Assent.RECORD_AUDIO);
                 }
-            }
-        } else {
-            if (isChecked) {
-                binding.etSubreddit.setVisibility(View.GONE);
-                binding.tvRedditTitle.setVisibility(View.GONE);
-            } else {
-                binding.etSubreddit.setVisibility(View.VISIBLE);
-                binding.tvRedditTitle.setVisibility(View.VISIBLE);
             }
         }
     }

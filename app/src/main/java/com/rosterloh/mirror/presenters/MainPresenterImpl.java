@@ -64,8 +64,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
             if (hasAccessToCalendar) {
                 startCalendar();
             }
-            //configuration.getServerAddress()
-            interactor.getMqtt().connect("", 1883, null, null, false, false);
+            initMqtt();
         }
     }
 
@@ -124,7 +123,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     }
 
     private void startWeather() {
-        interactor.loadWeather(configuration.getLocation(), configuration.isCelsius(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
+        interactor.loadWeather(configuration.getLocation(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
     }
 
     private void startReddit() {
@@ -137,6 +136,11 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
 
     private void initSpeechRecognitionService() {
         interactor.getAssetsDirForSpeechRecognizer(new AssetSubscriber());
+    }
+
+    private void initMqtt() {
+        interactor.getMqtt().connect(configuration.getServerAddress(), configuration.getServerPort(), null, null, false, false);
+        interactor.addMqttSubscriber(new MqttEventSubscriber());
     }
 
     private void setupTts() {
@@ -392,6 +396,22 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         @Override
         public void onNext(File assetDir) {
             setupRecognizer(assetDir);
+        }
+    }
+
+    private final class MqttEventSubscriber extends Subscriber<String> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            view.showError(e.getMessage());
+        }
+
+        @Override
+        public void onNext(String payload) {
+            view.handleMqttEvent(payload);
         }
     }
 }

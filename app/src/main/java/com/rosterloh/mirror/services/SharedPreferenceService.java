@@ -24,9 +24,8 @@ public class SharedPreferenceService {
         editor.putString(Constants.SP_SUBREDDIT_IDENTIFIER, configuration.getSubreddit());
         editor.putInt(Constants.SP_POLLING_IDENTIFIER, configuration.getPollingDelay());
         editor.putString(Constants.SP_SERVER_IDENTIFIER, configuration.getServerAddress());
-        editor.putBoolean(Constants.SP_CELSIUS_IDENTIFIER, configuration.isCelsius());
+        editor.putInt(Constants.SP_PORT_IDENTIFIER, configuration.getServerPort());
         editor.putBoolean(Constants.SP_VOICE_IDENTIFIER, configuration.isVoiceCommands());
-        editor.putBoolean(Constants.SP_REMEMBER_IDENTIFIER, configuration.isRememberConfig());
 
         editor.apply();
     }
@@ -38,8 +37,7 @@ public class SharedPreferenceService {
                 .subreddit(getSubreddit())
                 .pollingDelay(getPollingDelay())
                 .serverAddress(getServerAddress())
-                .celsius(getCelsius())
-                .rememberConfig(getRememberConfiguration())
+                .serverPort(getServerPort())
                 .voiceCommands(getVoiceCommands())
                 .build();
 
@@ -62,16 +60,12 @@ public class SharedPreferenceService {
         return preferences.getString(Constants.SP_SERVER_IDENTIFIER, null);
     }
 
-    public boolean getCelsius() {
-        return preferences.getBoolean(Constants.SP_CELSIUS_IDENTIFIER, false);
+    public int getServerPort() {
+        return preferences.getInt(Constants.SP_PORT_IDENTIFIER, 0);
     }
 
     public boolean getVoiceCommands() {
         return preferences.getBoolean(Constants.SP_VOICE_IDENTIFIER, false);
-    }
-
-    public boolean getRememberConfiguration() {
-        return preferences.getBoolean(Constants.SP_REMEMBER_IDENTIFIER, false);
     }
 
     public void removeConfiguration() {
@@ -82,9 +76,8 @@ public class SharedPreferenceService {
         editor.remove(Constants.SP_SUBREDDIT_IDENTIFIER);
         editor.remove(Constants.SP_POLLING_IDENTIFIER);
         editor.remove(Constants.SP_SERVER_IDENTIFIER);
-        editor.remove(Constants.SP_CELSIUS_IDENTIFIER);
+        editor.remove(Constants.SP_PORT_IDENTIFIER);
         editor.remove(Constants.SP_VOICE_IDENTIFIER);
-        editor.remove(Constants.SP_REMEMBER_IDENTIFIER);
 
         editor.apply();
     }

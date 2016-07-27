@@ -14,11 +14,13 @@ public interface MainInteractor {
 
     void loadTopRedditPost(String subreddit, int updateDelay, Subscriber<RedditPost> subscriber);
 
-    void loadWeather(String location, boolean celsius, int updateDelay, String apiKey, Subscriber<Weather> subscriber);
+    void loadWeather(String location, int updateDelay, String apiKey, Subscriber<Weather> subscriber);
 
     void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber);
 
     void unSubscribe();
 
     MqttService getMqtt();
+
+    void addMqttSubscriber(Subscriber<String> subscriber);
 }

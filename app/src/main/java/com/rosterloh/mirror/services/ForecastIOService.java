@@ -42,10 +42,10 @@ public class ForecastIOService {
 
     public Observable<Weather> getCurrentWeather(ForecastResponse response,
                                                  WeatherIconGenerator iconGenerator,
-                                                 Application application,
-                                                 boolean metric) {
+                                                 Application application) {
 
         boolean is24HourFormat = DateFormat.is24HourFormat(application);
+        boolean metric = true;
 
         String distanceUnit = metric ? Constants.DISTANCE_METRIC : Constants.DISTANCE_IMPERIAL;
         String pressureUnit = metric ? Constants.PRESSURE_METRIC : Constants.PRESSURE_IMPERIAL;

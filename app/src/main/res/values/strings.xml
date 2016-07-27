@@ -15,24 +15,19 @@
     <string name="general_title">General</string>
     <string name="polling_hint">Update interval in minutes (leave blank for 30 minutes)</string>
     <string name="reddit_title" translatable="false">Reddit</string>
-    <string name="subreddit_hint">Choose a subreddit (leave black for \'news\')</string>
+    <string name="subreddit_hint">Choose a subreddit (leave blank for \'news\')</string>
     <string name="weather_title">Weather</string>
     <string name="location_hint">Choose a city (leave blank for \'London\')</string>
     <string name="server_title">MQTT Server</string>
-    <string name="server_hint">Address of MQTT Server (leave blank for \'tcp://localhost:1883\')</string>
-    <string name="temperature_title">Temperature unit</string>
-    <string name="temperature_celsius">Celsius</string>
-    <string name="temperature_fahrenheit">Fahrenheit</string>
+    <string name="server_hint">Server Address (leave blank for \'localhost\')</string>
+    <string name="port_hint">Server Port (leave blank for 1883)</string>
     <string name="voice_title">Voice commands</string>
     <string name="turn_on_voice">Turn on voice commands (experimental)</string>
-    <string name="other_title">Other settings</string>
-    <string name="remember_config">Remember this configuration (press back to clear)</string>
     <string name="btn_done">Done</string>
 
     <!--Main Activity-->
     <string name="old_config_found_snackbar">Saved configuration found</string>
     <string name="old_config_found_snackbar_back">Back to setup</string>
-    <string name="simple_greeting">Hi there,\nIt\'s</string>
     <string name="date_on" translatable="false">on</string>
     <string name="last_updated">Last updated:</string>
     <string name="validating">Validating..</string>

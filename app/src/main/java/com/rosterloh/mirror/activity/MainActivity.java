@@ -3,10 +3,12 @@ package com.rosterloh.mirror.activity;
 import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -54,20 +56,18 @@ public class MainActivity extends AppCompatActivity implements MainView,
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Configuration configuration = objectStore.get();
-        boolean didLoadOldConfig = getIntent().getBooleanExtra(Constants.SAVED_CONFIGURATION_IDENTIFIER, false);
 
         //never sleep
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (didLoadOldConfig)
-            showConfigurationSnackbar();
+        showConfigurationSnackbar();
 
         presenter.setConfiguration(configuration);
     }
 
     private void showConfigurationSnackbar() {
         Snackbar snackbar = Snackbar
-                .make(binding.weatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
+                .make(binding.clMainLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.old_config_found_snackbar_back), view -> {
                     onBackPressed();
                 });
@@ -151,11 +151,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
         binding.tvForecastDate4.setText(weather.getForecast().get(3).getDate());
         binding.tvForecastTemp4.setText(weather.getForecast().get(3).getTemperature());
         binding.ivForecastWeather4.setImageResource(weather.getForecast().get(2).getIconId());
-
-        if (binding.weatherLayout.getVisibility() != View.VISIBLE) {
-            binding.weatherLayout.setVisibility(View.VISIBLE);
-            binding.weatherStatsLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -163,16 +158,37 @@ public class MainActivity extends AppCompatActivity implements MainView,
     public void displayTopRedditPost(RedditPost redditPost) {
         binding.tvRedditPostTitle.setText(redditPost.getTitle());
         binding.tvRedditPostVotes.setText(redditPost.getUps() + "");
-        if (binding.redditLayout.getVisibility() != View.VISIBLE)
-            binding.redditLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     @SuppressWarnings("all")
     public void displayLatestCalendarEvent(String event) {
         binding.tvCalendarEvent.setText(event);
-        if (binding.calendarLayout.getVisibility() != View.VISIBLE)
-            binding.calendarLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void handleMqttEvent(String payload) {
+
+        Bundle loggingParams = new Bundle();
+        Window window = this.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+
+        switch (payload) {
+            case "0":
+                loggingParams.putString("motion", "screen on");
+                layoutParams.screenBrightness = 0;
+                window.setAttributes(layoutParams);
+                break;
+            case "1":
+                loggingParams.putString("motion", "screen off");
+                layoutParams.screenBrightness = -1;
+                window.setAttributes(layoutParams);
+                break;
+            default:
+                loggingParams.putString("payload", payload);
+                break;
+        }
+        mFirebaseAnalytics.logEvent("mqtt", loggingParams);
     }
 
     @Override

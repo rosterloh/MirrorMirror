@@ -1,7 +1,6 @@
 package com.rosterloh.mirror.interactor;
 
 import android.app.Application;
-import android.text.format.DateFormat;
 
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
@@ -76,16 +75,13 @@ public class MainInteractorImpl implements MainInteractor {
 
     @Override
     public void loadWeather(String location,
-                            boolean celsius,
                             int updateDelay,
                             String apiKey,
                             Subscriber<Weather> subscriber) {
 
-        final String query = celsius ? Constants.WEATHER_QUERY_SECOND_CELSIUS : Constants.WEATHER_QUERY_SECOND_FAHRENHEIT;
-
         compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-            .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, query))
-            .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, application, celsius))
+            .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, Constants.WEATHER_QUERY_SECOND_CELSIUS))
+            .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, application))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
@@ -123,5 +119,15 @@ public class MainInteractorImpl implements MainInteractor {
     public MqttService getMqtt() {
 
         return this.mqttService;
+    }
+
+    @Override
+    public void addMqttSubscriber(Subscriber<String> subscriber) {
+
+        compositeSubscription.add(this.mqttService.observableListenerWrapper()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber));
     }
 }

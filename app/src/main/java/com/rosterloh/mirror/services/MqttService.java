@@ -15,14 +15,19 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import rx.Observable;
+import rx.Subscriber;
+
 public class MqttService implements IMqttActionListener, MqttCallbackExtended, MqttTraceHandler {
 
     private Application application;
     private MqttAndroidClient mqttAndroidClient;
+    private MqttManagerListener mListener;
     private static final String clientId = MqttClient.generateClientId();
     private static final String clientTopic = "home/2/bath/motion";
     private static final String TAG = "MqttService";
     private MqqtConnectionStatus clientStatus = MqqtConnectionStatus.NONE;
+    private Observable<String> event;
 
     public enum MqqtConnectionStatus {
         CONNECTING,
@@ -36,6 +41,40 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     public MqttService(Application application) {
 
         this.application = application;
+    }
+
+    public Observable<String> observableListenerWrapper() {
+
+        return Observable.create(new Observable.OnSubscribe<String>() {
+
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+
+                MqttManagerListener listener = new MqttManagerListener() {
+
+                    @Override
+                    public void onMqttDisconnected() {
+
+                    }
+
+                    @Override
+                    public void onMqttConnected() {
+
+                    }
+
+                    @Override
+                    public void onMqttMessageArrived(String topic, String payload) {
+                        subscriber.onNext(payload);
+                    }
+                };
+
+                setListener(listener);
+            }
+        });
+    }
+
+    public void setListener(MqttManagerListener listener) {
+        mListener = listener;
     }
 
     public void subscribe(String topic, int qos) {
@@ -159,7 +198,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
 
-        if(clientStatus == MqqtConnectionStatus.CONNECTING) {
+        if (clientStatus == MqqtConnectionStatus.CONNECTING) {
 
             DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
             disconnectedBufferOptions.setBufferEnabled(true);
@@ -170,11 +209,13 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
             Log.d(TAG, "Mqtt connect onSuccess");
             clientStatus = MqqtConnectionStatus.CONNECTED;
+            if (mListener != null) mListener.onMqttConnected();
             subscribe(clientTopic, 0);
         } else if (clientStatus == MqqtConnectionStatus.DISCONNECTING) {
 
             Log.d(TAG, "Mqtt disconnect onSuccess");
             clientStatus = MqqtConnectionStatus.DISCONNECTED;
+            if (mListener != null) mListener.onMqttDisconnected();
         } else {
 
             Log.d(TAG, "Mqtt unknown onSuccess");
@@ -186,6 +227,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
         Log.d(TAG, "Mqtt onFailure. " + exception);
         clientStatus = MqqtConnectionStatus.ERROR;
+        if (mListener != null) mListener.onMqttDisconnected();
     }
 
     @Override
@@ -203,6 +245,9 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
         Log.d(TAG, "Mqtt connectionLost. " + cause);
         clientStatus = MqqtConnectionStatus.DISCONNECTED;
+        if (mListener != null) {
+            mListener.onMqttDisconnected();
+        }
     }
 
     @Override
@@ -214,6 +259,10 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
         if(payload.length() > 0) {
 
             Log.d(TAG, "Mqtt messageArrived from topic: " + topic + " message: " + payload + " isDuplicate: " + (message.isDuplicate() ? "yes" : "no"));
+
+            if (mListener != null) {
+                mListener.onMqttMessageArrived(topic, payload);
+            }
 
             // Fix duplicated messages clearing the received payload and processing only non null messages
             message.clearPayload();
@@ -242,5 +291,13 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     public void traceException(String source, String message, Exception e) {
 
         Log.d(TAG, "Mqtt traceException: Source: " + source + " Message: " + message);
+    }
+
+    public interface MqttManagerListener {
+        void onMqttConnected();
+
+        void onMqttDisconnected();
+
+        void onMqttMessageArrived(String topic, String payload);
     }
 }

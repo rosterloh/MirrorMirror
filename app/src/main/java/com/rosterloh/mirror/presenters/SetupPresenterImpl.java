@@ -24,26 +24,23 @@ public class SetupPresenterImpl implements SetupPresenter {
      * @param subreddit      subreddit string
      * @param pollingDelay   update UI every x minutes
      * @param serverAddress  address of MQTT broker server
-     * @param celsius        metric data or imperial
+     * @param serverPort     port of MQTT broker server
      * @param voiceCommands  should listen for voice commands
-     * @param rememberConfig should remember configuration for next app start
      */
     @Override
     public void validate(String location,
                          String subreddit,
                          String pollingDelay,
                          String serverAddress,
-                         boolean celsius,
-                         boolean voiceCommands,
-                         boolean rememberConfig) {
+                         String serverPort,
+                         boolean voiceCommands) {
 
         interactor.validate(location,
                 subreddit,
                 pollingDelay,
                 serverAddress,
-                celsius,
+                serverPort,
                 voiceCommands,
-                rememberConfig,
                 new ConfigurationSubscriber());
     }
 

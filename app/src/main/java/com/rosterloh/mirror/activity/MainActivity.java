@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     private void showConfigurationSnackbar() {
         Snackbar snackbar = Snackbar
-                .make(binding.weatherLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
+                .make(binding.clMainLayout, getString(R.string.old_config_found_snackbar), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.old_config_found_snackbar_back), view -> {
                     onBackPressed();
                 });
@@ -151,11 +151,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
         binding.tvForecastDate4.setText(weather.getForecast().get(3).getDate());
         binding.tvForecastTemp4.setText(weather.getForecast().get(3).getTemperature());
         binding.ivForecastWeather4.setImageResource(weather.getForecast().get(2).getIconId());
-
-        if (binding.weatherLayout.getVisibility() != View.VISIBLE) {
-            binding.weatherLayout.setVisibility(View.VISIBLE);
-            binding.weatherStatsLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -163,16 +158,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
     public void displayTopRedditPost(RedditPost redditPost) {
         binding.tvRedditPostTitle.setText(redditPost.getTitle());
         binding.tvRedditPostVotes.setText(redditPost.getUps() + "");
-        if (binding.redditLayout.getVisibility() != View.VISIBLE)
-            binding.redditLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     @SuppressWarnings("all")
     public void displayLatestCalendarEvent(String event) {
         binding.tvCalendarEvent.setText(event);
-        if (binding.calendarLayout.getVisibility() != View.VISIBLE)
-            binding.calendarLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

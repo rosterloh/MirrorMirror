@@ -19,7 +19,6 @@ import com.rosterloh.mirror.databinding.ActivitySetupBinding;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.presenters.SetupPresenter;
 import com.rosterloh.mirror.util.ASFObjectStore;
-import com.rosterloh.mirror.util.Constants;
 import com.rosterloh.mirror.views.SetupView;
 
 import javax.inject.Inject;

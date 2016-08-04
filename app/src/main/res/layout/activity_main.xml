@@ -23,8 +23,8 @@
             android:format24Hour="kk:mm"
             android:textColor="@color/white"
             android:textSize="200sp"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
-            app:layout_constraintTop_toTopOf="@+id/cl_main_layout" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_listening"
@@ -34,8 +34,8 @@
             app:srcCompat="@drawable/ic_mic"
             android:tint="@color/white"
             android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="@+id/cl_main_layout"
-            app:layout_constraintRight_toRightOf="@+id/cl_main_layout" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextClock
             android:id="@+id/tc_date"
@@ -45,7 +45,7 @@
             android:format24Hour="dd MMM yyyy"
             android:textColor="@color/white"
             android:textSize="54sp"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/tc_time" />
 
         <LinearLayout
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tc_date" >
 
             <ImageView
@@ -232,7 +232,7 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_current_weather" />
 
         <ImageView
@@ -245,7 +245,7 @@
             android:paddingTop="4dp"
             android:src="@drawable/ic_wind_stats"
             android:tint="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_1" />
 
         <TextView
@@ -272,7 +272,7 @@
             android:paddingTop="4dp"
             android:src="@drawable/ic_water_percent"
             android:tint="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stats_wind" />
 
         <TextView
@@ -356,7 +356,7 @@
             android:textSize="16sp"
             android:textStyle="italic"
             tools:text="Last updated: 26 minutes ago"
-            app:layout_constraintRight_toRightOf="@+id/cl_main_layout"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_1" />
 
         <View
@@ -364,7 +364,7 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stats_humidity" />
 
         <ImageView
@@ -378,7 +378,7 @@
             android:paddingTop="4dp"
             android:src="@drawable/ic_calendar"
             android:tint="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stats_humidity" />
 
         <TextView
@@ -395,7 +395,7 @@
             android:textSize="28sp"
             tools:text="Very important stuff ya know, Very important stuff ya know, Very important stuff ya know, Very important stuff ya know"
             app:layout_constraintLeft_toRightOf="@+id/iv_calendar"
-            app:layout_constraintRight_toRightOf="@+id/cl_main_layout"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_2" />
 
         <View
@@ -404,7 +404,7 @@
             android:layout_height="4dp"
             android:layout_marginBottom="16dp"
             android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/iv_reddit_post" />
 
         <ImageView
@@ -417,7 +417,7 @@
             android:paddingTop="4dp"
             android:src="@drawable/ic_reddit"
             android:tint="@color/white"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/tv_reddit_post_votes" />
 
         <TextView
@@ -434,7 +434,7 @@
             android:textSize="28sp"
             tools:text="Butte man arrested after calling cops to complain he was ripped off in meth deal to complain he was ripped off in meth deal"
             app:layout_constraintLeft_toRightOf="@+id/iv_reddit_post"
-            app:layout_constraintRight_toRightOf="@+id/cl_main_layout"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/v_separator_3" />
 
         <TextView
@@ -445,9 +445,8 @@
             android:textColor="@color/white"
             android:textSize="26sp"
             tools:text="9999"
-            app:layout_constraintLeft_toLeftOf="@+id/cl_main_layout"
-            app:layout_constraintRight_toRightOf="@+id/cl_main_layout"
-            app:layout_constraintBottom_toBottomOf="@+id/cl_main_layout" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

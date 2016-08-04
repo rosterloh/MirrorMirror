@@ -1,4 +1,4 @@
-# [MirrorMirror](https://github.com/rosterloh/MirrorMirror)
+# [MirrorMirror](https://github.com/rosterloh/MirrorMirror) [![Build Status](https://travis-ci.org/rosterloh/MirrorMirror.svg?branch=master)](https://travis-ci.org/rosterloh/MirrorMirror)
 
 A Magic Mirror for me
 

@@ -15,8 +15,10 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.observers.DisposableObserver;
 
 public class MqttService implements IMqttActionListener, MqttCallbackExtended, MqttTraceHandler {
 
@@ -26,10 +28,9 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     private static final String clientId = MqttClient.generateClientId();
     private static final String clientTopic = "home/2/bath/motion";
     private static final String TAG = "MqttService";
-    private MqqtConnectionStatus clientStatus = MqqtConnectionStatus.NONE;
-    private Observable<String> event;
+    private MqttConnectionStatus clientStatus = MqttConnectionStatus.NONE;
 
-    public enum MqqtConnectionStatus {
+    public enum MqttConnectionStatus {
         CONNECTING,
         CONNECTED,
         DISCONNECTING,
@@ -45,11 +46,10 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
     public Observable<String> observableListenerWrapper() {
 
-        return Observable.create(new Observable.OnSubscribe<String>() {
+        return Observable.create(new ObservableOnSubscribe<String>() {
 
             @Override
-            public void call(Subscriber<? super String> subscriber) {
-
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
                 MqttManagerListener listener = new MqttManagerListener() {
 
                     @Override
@@ -64,7 +64,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
                     @Override
                     public void onMqttMessageArrived(String topic, String payload) {
-                        subscriber.onNext(payload);
+                        e.onNext(payload);
                     }
                 };
 
@@ -79,7 +79,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
     public void subscribe(String topic, int qos) {
 
-        if (mqttAndroidClient != null && clientStatus == MqqtConnectionStatus.CONNECTED && topic != null) {
+        if (mqttAndroidClient != null && clientStatus == MqttConnectionStatus.CONNECTED && topic != null) {
             try {
                 Log.d(TAG, "Mqtt: subscribe to " + topic + " qos:" + qos);
                 mqttAndroidClient.subscribe(topic, qos);
@@ -91,7 +91,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
     public void unsubscribe(String topic) {
 
-        if (mqttAndroidClient != null && clientStatus == MqqtConnectionStatus.CONNECTED && topic != null) {
+        if (mqttAndroidClient != null && clientStatus == MqttConnectionStatus.CONNECTED && topic != null) {
             try {
                 Log.d(TAG, "Mqtt: unsubscribe from " + topic);
                 mqttAndroidClient.unsubscribe(topic);
@@ -103,7 +103,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     }
 
     public void publish(String topic, String payload, int qos) {
-        if (mqttAndroidClient != null && clientStatus == MqqtConnectionStatus.CONNECTED && topic != null) {
+        if (mqttAndroidClient != null && clientStatus == MqttConnectionStatus.CONNECTED && topic != null) {
             boolean retained = false;
 
             try {
@@ -117,11 +117,11 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
     public void disconnect() {
 
-        if (mqttAndroidClient != null && clientStatus == MqqtConnectionStatus.CONNECTED) {
+        if (mqttAndroidClient != null && clientStatus == MqttConnectionStatus.CONNECTED) {
             try {
                 Log.d(TAG, "Mqtt: disconnect");
 //              clientStatus = MqqtConnectionStatus.DISCONNECTING;
-                clientStatus = MqqtConnectionStatus.DISCONNECTED;      // Note: it seems that the disconnected callback is never invoked. So we fake here that the final state is disconnected
+                clientStatus = MqttConnectionStatus.DISCONNECTED;      // Note: it seems that the disconnected callback is never invoked. So we fake here that the final state is disconnected
                 mqttAndroidClient.disconnect(null, this);
 
                 mqttAndroidClient.unregisterResources();
@@ -187,7 +187,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
             try {
                 Log.d(TAG, "Mqtt: connect to " + uri);
-                clientStatus = MqqtConnectionStatus.CONNECTING;
+                clientStatus = MqttConnectionStatus.CONNECTING;
                 mqttAndroidClient.connect(conOpt, null, this);
             } catch (MqttException e) {
                 Log.e(TAG, "Mqtt: connection error: ", e);
@@ -198,7 +198,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
 
-        if (clientStatus == MqqtConnectionStatus.CONNECTING) {
+        if (clientStatus == MqttConnectionStatus.CONNECTING) {
 
             DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
             disconnectedBufferOptions.setBufferEnabled(true);
@@ -208,13 +208,13 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
             mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
 
             Log.d(TAG, "Mqtt connect onSuccess");
-            clientStatus = MqqtConnectionStatus.CONNECTED;
+            clientStatus = MqttConnectionStatus.CONNECTED;
             if (mListener != null) mListener.onMqttConnected();
             subscribe(clientTopic, 0);
-        } else if (clientStatus == MqqtConnectionStatus.DISCONNECTING) {
+        } else if (clientStatus == MqttConnectionStatus.DISCONNECTING) {
 
             Log.d(TAG, "Mqtt disconnect onSuccess");
-            clientStatus = MqqtConnectionStatus.DISCONNECTED;
+            clientStatus = MqttConnectionStatus.DISCONNECTED;
             if (mListener != null) mListener.onMqttDisconnected();
         } else {
 
@@ -226,7 +226,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
         Log.d(TAG, "Mqtt onFailure. " + exception);
-        clientStatus = MqqtConnectionStatus.ERROR;
+        clientStatus = MqttConnectionStatus.ERROR;
         if (mListener != null) mListener.onMqttDisconnected();
     }
 
@@ -244,7 +244,7 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
     public void connectionLost(Throwable cause) {
 
         Log.d(TAG, "Mqtt connectionLost. " + cause);
-        clientStatus = MqqtConnectionStatus.DISCONNECTED;
+        clientStatus = MqttConnectionStatus.DISCONNECTED;
         if (mListener != null) {
             mListener.onMqttDisconnected();
         }

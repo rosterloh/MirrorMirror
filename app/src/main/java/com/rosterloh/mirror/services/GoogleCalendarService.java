@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class GoogleCalendarService {
 

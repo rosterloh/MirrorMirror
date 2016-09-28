@@ -2,7 +2,7 @@ package com.rosterloh.mirror.setup;
 
 import com.rosterloh.mirror.models.Configuration;
 
-import rx.Subscriber;
+import io.reactivex.observers.DisposableObserver;
 
 public interface SetupInteractor {
 
@@ -12,7 +12,7 @@ public interface SetupInteractor {
                   String serverAddress,
                   String serverPort,
                   boolean voiceCommands,
-                  Subscriber<Configuration> configurationSubscriber);
+                  DisposableObserver<Configuration> configurationSubscriber);
 
-    void start(Subscriber<Configuration> configurationSubscriber);
+    void start(DisposableObserver<Configuration> configurationSubscriber);
 }

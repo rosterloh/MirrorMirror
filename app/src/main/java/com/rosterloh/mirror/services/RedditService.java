@@ -7,13 +7,13 @@ import com.rosterloh.mirror.util.Constants;
 
 import java.util.Random;
 
+import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public class RedditService {
 

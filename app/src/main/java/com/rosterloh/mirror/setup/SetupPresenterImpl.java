@@ -2,7 +2,7 @@ package com.rosterloh.mirror.setup;
 
 import com.rosterloh.mirror.models.Configuration;
 
-import rx.Subscriber;
+import io.reactivex.observers.DisposableObserver;
 
 public class SetupPresenterImpl implements SetupPresenter {
 
@@ -68,7 +68,7 @@ public class SetupPresenterImpl implements SetupPresenter {
      * this callback is used if this is a new configuration or
      * if the configuration was stored in preferences.
      */
-    private final class ConfigurationSubscriber extends Subscriber<Configuration> {
+    private final class ConfigurationSubscriber extends DisposableObserver<Configuration> {
 
         @Override
         public void onStart() {
@@ -76,7 +76,7 @@ public class SetupPresenterImpl implements SetupPresenter {
         }
 
         @Override
-        public void onCompleted() {
+        public void onComplete() {
             view.hideLoading();
         }
 

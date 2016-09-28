@@ -7,10 +7,10 @@ import com.rosterloh.mirror.services.GoogleMapsService;
 import com.rosterloh.mirror.services.SharedPreferenceService;
 import com.rosterloh.mirror.util.Constants;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class SetupInteractorImpl implements SetupInteractor {
 
@@ -28,12 +28,12 @@ public class SetupInteractorImpl implements SetupInteractor {
     }
 
     @Override
-    public void start(Subscriber<Configuration> configurationSubscriber) {
+    public void start(DisposableObserver<Configuration> configurationSubscriber) {
 
         Observable.just(preferenceService.getRememberedConfiguration())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(configurationSubscriber);
+            .subscribeWith(configurationSubscriber);
     }
 
     @Override
@@ -43,14 +43,14 @@ public class SetupInteractorImpl implements SetupInteractor {
                          String serverAddress,
                          String serverPort,
                          boolean voiceCommands,
-                         Subscriber<Configuration> configurationSubscriber) {
+                         DisposableObserver<Configuration> configurationSubscriber) {
 
         googleMapsService.getApi().getLatLongForAddress(location.isEmpty() ? Constants.LOCATION_DEFAULT : location, "false")
             .flatMap(googleMapsService::getLatLong)
             .flatMap(latLng -> generateConfiguration(latLng, subreddit, pollingDelay, serverAddress, serverPort, voiceCommands))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(configurationSubscriber);
+            .subscribeWith(configurationSubscriber);
     }
 
     private Observable<Configuration> generateConfiguration(String latLong,

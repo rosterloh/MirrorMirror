@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
@@ -85,9 +85,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         tearDownSpeechService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
+                .subscribeWith(new DisposableObserver<Void>() {
                     @Override
-                    public void onCompleted() {
+                    public void onComplete() {
                         interactor.unSubscribe();
                     }
 
@@ -144,9 +144,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         initTts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
+                .subscribeWith(new DisposableObserver<Void>() {
                     @Override
-                    public void onCompleted() {
+                    public void onComplete() {
 
                     }
 
@@ -166,9 +166,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         initRecognizer(assetDir)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
+                .subscribeWith(new DisposableObserver<Void>() {
                     @Override
-                    public void onCompleted() {
+                    public void onComplete() {
                         setListeningMode(Constants.KWS_SEARCH);
                     }
 
@@ -251,7 +251,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         timeOut(10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
+                .subscribeWith(new DisposableObserver<Void>() {
 
                     @Override
                     public void onStart() {
@@ -259,7 +259,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
                     }
 
                     @Override
-                    public void onCompleted() {
+                    public void onComplete() {
                         view.hideMap();
                     }
 
@@ -329,10 +329,10 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     public void onInit(int status) {
     }
 
-    private final class WeatherSubscriber extends Subscriber<Weather> {
+    private final class WeatherSubscriber extends DisposableObserver<Weather> {
 
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @Override
@@ -346,10 +346,10 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         }
     }
 
-    private final class RedditSubscriber extends Subscriber<RedditPost> {
+    private final class RedditSubscriber extends DisposableObserver<RedditPost> {
 
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @Override
@@ -363,9 +363,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         }
     }
 
-    private final class CalendarEventSubscriber extends Subscriber<String> {
+    private final class CalendarEventSubscriber extends DisposableObserver<String> {
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @Override
@@ -379,10 +379,10 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         }
     }
 
-    private final class AssetSubscriber extends Subscriber<File> {
+    private final class AssetSubscriber extends DisposableObserver<File> {
 
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @Override
@@ -396,9 +396,9 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         }
     }
 
-    private final class MqttEventSubscriber extends Subscriber<String> {
+    private final class MqttEventSubscriber extends DisposableObserver<String> {
         @Override
-        public void onCompleted() {
+        public void onComplete() {
         }
 
         @Override

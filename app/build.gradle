@@ -83,8 +83,8 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:${libs.retrofit}"
     compile "com.squareup.picasso:picasso:${libs.picasso}"
 
-    compile "io.reactivex:rxandroid:${libs.rxandroid}"
-    compile "io.reactivex:rxjava:${libs.rxjava}"
+    compile "io.reactivex.rxjava2:rxandroid:${libs.rxandroid}"
+    compile "io.reactivex.rxjava2:rxjava:${libs.rxjava}"
 
     compile "com.google.dagger:dagger:${libs.dagger}"
     apt "com.google.dagger:dagger-compiler:${libs.dagger}"

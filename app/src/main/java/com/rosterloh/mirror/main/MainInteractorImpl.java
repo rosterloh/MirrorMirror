@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import edu.cmu.pocketsphinx.Assets;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainInteractorImpl implements MainInteractor {
 
@@ -29,7 +29,7 @@ public class MainInteractorImpl implements MainInteractor {
     private GoogleCalendarService googleCalendarService;
     private RedditService redditService;
     private WeatherIconGenerator weatherIconGenerator;
-    private CompositeSubscription compositeSubscription;
+    private CompositeDisposable compositeDisposable;
     private MqttService mqttService;
 
     public MainInteractorImpl(Application application,
@@ -44,52 +44,52 @@ public class MainInteractorImpl implements MainInteractor {
         this.googleCalendarService = googleCalendarService;
         this.redditService = redditService;
         this.weatherIconGenerator = weatherIconGenerator;
-        this.compositeSubscription = new CompositeSubscription();
+        this.compositeDisposable = new CompositeDisposable();
         this.mqttService = mqttService;
     }
 
     @Override
-    public void loadLatestCalendarEvent(int updateDelay, Subscriber<String> subscriber) {
+    public void loadLatestCalendarEvent(int updateDelay, DisposableObserver<String> subscriber) {
 
-        compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        compositeDisposable.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
             .flatMap(ignore -> googleCalendarService.getLatestCalendarEvent())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
-            .subscribe(subscriber));
+            .subscribeWith(subscriber));
     }
 
     @Override
     public void loadTopRedditPost(String subreddit,
                                   int updateDelay,
-                                  Subscriber<RedditPost> subscriber) {
+                                  DisposableObserver<RedditPost> subscriber) {
 
-        compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        compositeDisposable.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
             .flatMap(ignore -> redditService.getApi().getTopRedditPostForSubreddit(subreddit, Constants.REDDIT_LIMIT))
             .flatMap(redditService::getRedditPost)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
-            .subscribe(subscriber));
+            .subscribeWith(subscriber));
     }
 
     @Override
     public void loadWeather(String location,
                             int updateDelay,
                             String apiKey,
-                            Subscriber<Weather> subscriber) {
+                            DisposableObserver<Weather> subscriber) {
 
-        compositeSubscription.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
+        compositeDisposable.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
             .flatMap(ignore -> forecastIOService.getApi().getCurrentWeatherConditions(apiKey, location, Constants.WEATHER_QUERY_SECOND_CELSIUS))
             .flatMap(response -> forecastIOService.getCurrentWeather(response, weatherIconGenerator, application))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
-            .subscribe(subscriber));
+            .subscribeWith(subscriber));
     }
 
     @Override
-    public void getAssetsDirForSpeechRecognizer(Subscriber<File> subscriber) {
+    public void getAssetsDirForSpeechRecognizer(DisposableObserver<File> subscriber) {
 
         Observable.defer(() -> {
                 try {
@@ -103,16 +103,16 @@ public class MainInteractorImpl implements MainInteractor {
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(subscriber);
+            .subscribeWith(subscriber);
     }
 
     @Override
     public void unSubscribe() {
 
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
         }
-        compositeSubscription = new CompositeSubscription();
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -122,12 +122,12 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     @Override
-    public void addMqttSubscriber(Subscriber<String> subscriber) {
+    public void addMqttSubscriber(DisposableObserver<String> subscriber) {
 
-        compositeSubscription.add(this.mqttService.observableListenerWrapper()
+        compositeDisposable.add(this.mqttService.observableListenerWrapper()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber));
+                .subscribeWith(subscriber));
     }
 }

@@ -6,7 +6,7 @@ public final class Constants {
      * Base urls
      */
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
-    public static final String FORECAST_BASE_URL = "https://api.forecast.io/forecast/";
+    public static final String FORECAST_BASE_URL = "https://api.darksky.net/forecast/";
     public static final String YO_MOMMA_BASE_URL = "http://api.yomomma.info/";
     public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
     public static final String STATIC_MAPS_URL_FIRST = "https://maps.googleapis.com/maps/api/staticmap?center=";

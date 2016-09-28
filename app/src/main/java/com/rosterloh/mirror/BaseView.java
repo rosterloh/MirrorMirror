@@ -1,4 +1,4 @@
-package com.rosterloh.mirror.views;
+package com.rosterloh.mirror;
 
 public interface BaseView {
 

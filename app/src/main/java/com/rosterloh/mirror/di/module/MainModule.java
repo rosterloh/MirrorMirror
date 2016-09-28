@@ -3,16 +3,16 @@ package com.rosterloh.mirror.di.module;
 import android.app.Application;
 
 import com.rosterloh.mirror.di.PerActivity;
-import com.rosterloh.mirror.interactor.MainInteractor;
-import com.rosterloh.mirror.interactor.MainInteractorImpl;
-import com.rosterloh.mirror.presenters.MainPresenter;
-import com.rosterloh.mirror.presenters.MainPresenterImpl;
+import com.rosterloh.mirror.main.MainInteractor;
+import com.rosterloh.mirror.main.MainInteractorImpl;
+import com.rosterloh.mirror.main.MainPresenter;
+import com.rosterloh.mirror.main.MainPresenterImpl;
 import com.rosterloh.mirror.services.ForecastIOService;
 import com.rosterloh.mirror.services.GoogleCalendarService;
 import com.rosterloh.mirror.services.MqttService;
 import com.rosterloh.mirror.services.RedditService;
 import com.rosterloh.mirror.util.WeatherIconGenerator;
-import com.rosterloh.mirror.views.MainView;
+import com.rosterloh.mirror.main.MainView;
 
 import dagger.Module;
 import dagger.Provides;

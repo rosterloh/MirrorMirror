@@ -1,4 +1,4 @@
-package com.rosterloh.mirror.presenters;
+package com.rosterloh.mirror.main;
 
 import android.app.Application;
 import android.os.Build;
@@ -7,13 +7,10 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import com.rosterloh.mirror.R;
-import com.rosterloh.mirror.interactor.MainInteractor;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
 import com.rosterloh.mirror.util.Constants;
-import com.rosterloh.mirror.activity.MainActivity;
-import com.rosterloh.mirror.views.MainView;
 
 import java.io.File;
 import java.io.IOException;

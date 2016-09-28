@@ -13,8 +13,8 @@ import com.rosterloh.mirror.di.module.ServiceModule;
 import com.rosterloh.mirror.di.module.SetupModule;
 import com.rosterloh.mirror.di.module.StorageModule;
 import com.rosterloh.mirror.di.module.UtilModule;
-import com.rosterloh.mirror.views.MainView;
-import com.rosterloh.mirror.views.SetupView;
+import com.rosterloh.mirror.main.MainView;
+import com.rosterloh.mirror.setup.SetupView;
 
 public class MirrorApplication extends Application {
 

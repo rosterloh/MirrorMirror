@@ -1,9 +1,8 @@
-package com.rosterloh.mirror.activity;
+package com.rosterloh.mirror.main;
 
 import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.os.PowerManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +22,8 @@ import com.rosterloh.mirror.databinding.ActivityMainBinding;
 import com.rosterloh.mirror.models.Configuration;
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
-import com.rosterloh.mirror.presenters.MainPresenter;
 import com.rosterloh.mirror.util.ASFObjectStore;
 import com.rosterloh.mirror.util.Constants;
-import com.rosterloh.mirror.views.MainView;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;

@@ -3,13 +3,13 @@ package com.rosterloh.mirror.di.module;
 import android.app.Application;
 
 import com.rosterloh.mirror.di.PerActivity;
-import com.rosterloh.mirror.interactor.SetupInteractor;
-import com.rosterloh.mirror.interactor.SetupInteractorImpl;
-import com.rosterloh.mirror.presenters.SetupPresenter;
-import com.rosterloh.mirror.presenters.SetupPresenterImpl;
+import com.rosterloh.mirror.setup.SetupInteractor;
+import com.rosterloh.mirror.setup.SetupInteractorImpl;
+import com.rosterloh.mirror.setup.SetupPresenter;
+import com.rosterloh.mirror.setup.SetupPresenterImpl;
 import com.rosterloh.mirror.services.GoogleMapsService;
 import com.rosterloh.mirror.services.SharedPreferenceService;
-import com.rosterloh.mirror.views.SetupView;
+import com.rosterloh.mirror.setup.SetupView;
 
 import dagger.Module;
 import dagger.Provides;

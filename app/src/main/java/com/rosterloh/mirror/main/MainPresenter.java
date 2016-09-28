@@ -1,4 +1,4 @@
-package com.rosterloh.mirror.presenters;
+package com.rosterloh.mirror.main;
 
 import com.rosterloh.mirror.models.Configuration;
 

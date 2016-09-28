@@ -1,7 +1,8 @@
-package com.rosterloh.mirror.views;
+package com.rosterloh.mirror.main;
 
 import com.rosterloh.mirror.models.RedditPost;
 import com.rosterloh.mirror.models.Weather;
+import com.rosterloh.mirror.BaseView;
 
 public interface MainView extends BaseView {
 

@@ -1,4 +1,4 @@
-package com.rosterloh.mirror.interactor;
+package com.rosterloh.mirror.main;
 
 import android.app.Application;
 

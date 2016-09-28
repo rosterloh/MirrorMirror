@@ -1,6 +1,6 @@
 package com.rosterloh.mirror.di.component;
 
-import com.rosterloh.mirror.activity.SetupActivity;
+import com.rosterloh.mirror.setup.SetupActivity;
 import com.rosterloh.mirror.di.PerActivity;
 import com.rosterloh.mirror.di.module.SetupModule;
 

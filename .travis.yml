@@ -5,11 +5,13 @@ env:
     - ANDROID_TARGET=android-24
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-24.0.1
+    - tools # https://github.com/travis-ci/travis-ci/issues/5049
     - android-24
-    - extra-google-m2repository
+    - platform-tools-24
+    - build-tools-24.0.2
     - extra-android-m2repository
+    - extra-google-m2repository
+  licenses:
+    - 'android-sdk-license-.+'
 script:
   - ./gradlew build

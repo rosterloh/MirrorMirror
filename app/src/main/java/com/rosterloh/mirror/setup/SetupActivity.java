@@ -1,4 +1,4 @@
-package com.rosterloh.mirror.activity;
+package com.rosterloh.mirror.setup;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
@@ -16,10 +16,9 @@ import com.afollestad.assent.Assent;
 import com.rosterloh.mirror.MirrorApplication;
 import com.rosterloh.mirror.R;
 import com.rosterloh.mirror.databinding.ActivitySetupBinding;
+import com.rosterloh.mirror.main.MainActivity;
 import com.rosterloh.mirror.models.Configuration;
-import com.rosterloh.mirror.presenters.SetupPresenter;
 import com.rosterloh.mirror.util.ASFObjectStore;
-import com.rosterloh.mirror.views.SetupView;
 
 import javax.inject.Inject;
 

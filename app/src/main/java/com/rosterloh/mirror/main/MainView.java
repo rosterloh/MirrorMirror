@@ -16,7 +16,7 @@ public interface MainView extends BaseView {
 
     void displayCurrentWeather(Weather weather);
 
-    void displayLatestCalendarEvent(String event);
+    void displayCalendarEvents(String events);
 
     void displayTopRedditPost(RedditPost redditPost);
 

@@ -1,20 +1,18 @@
 ext {
     configuration = [
             package             : "com.rosterloh.mirror",
-            buildToolsVersion   : "24.0.2",
-            compileVersion      : 24,
+            buildToolsVersion   : "24.0.3",
+            compileVersion      : 25,
             minSdk              : 19,
-            targetSdk           : 24,
-            version_code        : 3,
-            version_name        : "0.1.0",
+            targetSdk           : 25
     ]
 
     libraries = [
-            supportVersion      : "24.2.1",
+            supportVersion      : "25.0.0",
             playServices        : "9.6.1",
-            constraintLayout    : "1.0.0-alpha8",
+            constraintLayout    : "1.0.0-beta1",
             dagger              : "2.7",
-            rxjava              : "2.0.0-RC3",
+            rxjava              : "2.0.0-RC5",
             rxandroid           : "2.0.0-RC1",
             retrofit            : "2.1.0",
             javaxAnnotation     : "10.0-b28",
@@ -41,7 +39,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0'
         classpath 'com.google.gms:google-services:3.0.0'

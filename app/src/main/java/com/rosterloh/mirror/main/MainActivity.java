@@ -159,8 +159,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @Override
     @SuppressWarnings("all")
-    public void displayLatestCalendarEvent(String event) {
-        binding.tvCalendarEvent.setText(event);
+    public void displayCalendarEvents(String events) {
+        binding.tvCalendarEvent.setText(events);
     }
 
     @Override

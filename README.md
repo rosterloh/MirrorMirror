@@ -11,7 +11,6 @@ A Magic Mirror for me
 * [Android Design Library](http://developer.android.com/tools/support-library/index.html)
 * [Retrofit](https://github.com/square/retrofit)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
-* [Butterknife](https://github.com/JakeWharton/butterknife)
 * [Assent](https://github.com/afollestad/assent)
 * [Pocketsphinx](http://cmusphinx.sourceforge.net/wiki/tutorialandroid)
 

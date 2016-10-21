@@ -49,10 +49,10 @@ public class MainInteractorImpl implements MainInteractor {
     }
 
     @Override
-    public void loadLatestCalendarEvent(int updateDelay, DisposableObserver<String> subscriber) {
+    public void loadCalendarEvents(int updateDelay, DisposableObserver<String> subscriber) {
 
         compositeDisposable.add(Observable.interval(0, updateDelay, TimeUnit.MINUTES)
-            .flatMap(ignore -> googleCalendarService.getLatestCalendarEvent())
+            .flatMap(ignore -> googleCalendarService.getCalendarEvents())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())

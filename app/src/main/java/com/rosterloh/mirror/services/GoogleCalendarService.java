@@ -29,7 +29,7 @@ public class GoogleCalendarService {
     }
 
     @SuppressWarnings("all")
-    public Observable<String> getLatestCalendarEvent() {
+    public Observable<String> getCalendarEvents() {
         String details, title;
         Cursor cursor;
         ContentResolver contentResolver = application.getContentResolver();
@@ -61,19 +61,25 @@ public class GoogleCalendarService {
 
         if (cursor != null) {
             if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                title = cursor.getString(0);
-                Calendar startTime = Calendar.getInstance();
-                startTime.setTimeInMillis(cursor.getLong(1));
-                Calendar endTime = Calendar.getInstance();
-                endTime.setTimeInMillis(cursor.getLong(2));
-                DateFormat formatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
-                details = formatter.format(startTime.getTime()) + " - " + formatter.format(endTime.getTime());
-                if (!TextUtils.isEmpty(cursor.getString(3))) {
-                    details += " " + application.getString(R.string.at) + " " + cursor.getString(3);
+                StringBuilder stringBuilder = new StringBuilder();
+                while (cursor.moveToNext()) {
+                    title = cursor.getString(0);
+                    Calendar startTime = Calendar.getInstance();
+                    startTime.setTimeInMillis(cursor.getLong(1));
+                    Calendar endTime = Calendar.getInstance();
+                    endTime.setTimeInMillis(cursor.getLong(2));
+                    DateFormat formatter = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
+                    details = formatter.format(startTime.getTime()) + " - " + formatter.format(endTime.getTime());
+                    if (!TextUtils.isEmpty(cursor.getString(3))) {
+                        details += " " + application.getString(R.string.at) + " " + cursor.getString(3);
+                    }
+                    stringBuilder.append(title + ", " + details);
+                    if (!cursor.isLast()) {
+                        stringBuilder.append(" | ");
+                    }
                 }
                 cursor.close();
-                return Observable.just(title + ", " + details);
+                return Observable.just(stringBuilder.toString());
             } else {
                 cursor.close();
                 return Observable.just(application.getString(R.string.no_events_today));

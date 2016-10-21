@@ -10,7 +10,7 @@ import io.reactivex.observers.DisposableObserver;
 
 public interface MainInteractor {
 
-    void loadLatestCalendarEvent(int updateDelay, DisposableObserver<String> subscriber);
+    void loadCalendarEvents(int updateDelay, DisposableObserver<String> subscriber);
 
     void loadTopRedditPost(String subreddit, int updateDelay, DisposableObserver<RedditPost> subscriber);
 

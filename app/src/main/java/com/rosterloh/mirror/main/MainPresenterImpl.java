@@ -120,7 +120,8 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     }
 
     private void startWeather() {
-        interactor.loadWeather(configuration.getLocation(), configuration.getPollingDelay(), ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
+        interactor.loadWeather(configuration.getLocation(), configuration.getPollingDelay(),
+                ((MainActivity) view).getString(R.string.forecast_api_key), new WeatherSubscriber());
     }
 
     private void startReddit() {
@@ -128,7 +129,7 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
     }
 
     private void startCalendar() {
-        interactor.loadLatestCalendarEvent(configuration.getPollingDelay(), new CalendarEventSubscriber());
+        interactor.loadCalendarEvents(configuration.getPollingDelay(), new CalendarEventSubscriber());
     }
 
     private void initSpeechRecognitionService() {
@@ -374,8 +375,8 @@ public class MainPresenterImpl implements MainPresenter, RecognitionListener, Te
         }
 
         @Override
-        public void onNext(String event) {
-            view.displayLatestCalendarEvent(event);
+        public void onNext(String events) {
+            view.displayCalendarEvents(events);
         }
     }
 

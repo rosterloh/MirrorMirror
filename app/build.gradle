@@ -1,6 +1,5 @@
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 def versionMajor = 0
 def versionMinor = 1
@@ -102,7 +101,7 @@ dependencies {
     compile "io.reactivex.rxjava2:rxjava:${libs.rxjava}"
 
     compile "com.google.dagger:dagger:${libs.dagger}"
-    apt "com.google.dagger:dagger-compiler:${libs.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${libs.dagger}"
     provided "org.glassfish:javax.annotation:${libs.javaxAnnotation}"
 
     compile "com.afollestad.material-dialogs:core:${libs.materialDialogs}"

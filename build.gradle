@@ -1,31 +1,31 @@
 ext {
     configuration = [
             package             : "com.rosterloh.mirror",
-            buildToolsVersion   : "24.0.3",
+            buildToolsVersion   : "25.0.1",
             compileVersion      : 25,
             minSdk              : 19,
             targetSdk           : 25
     ]
 
     libraries = [
-            supportVersion      : "25.0.0",
-            playServices        : "9.6.1",
-            constraintLayout    : "1.0.0-beta1",
-            dagger              : "2.7",
-            rxjava              : "2.0.0-RC5",
-            rxandroid           : "2.0.0-RC1",
+            supportVersion      : "25.0.1",
+            playServices        : "10.0.0",
+            constraintLayout    : "1.0.0-beta4",
+            dagger              : "2.8",
+            rxjava              : "2.0.1",
+            rxandroid           : "2.0.1",
             retrofit            : "2.1.0",
             javaxAnnotation     : "10.0-b28",
             okhttp              : "3.3.1",
             picasso             : "2.5.2",
-            materialDialogs     : "0.9.0.2",
+            materialDialogs     : "0.9.1.0",
             assent              : "0.2.5",
             pahoMqtt            : "1.1.1-SNAPSHOT"
     ]
 
     testingLibraries = [
             junit               : "4.12",
-            mockito             : "1.10.19",
+            mockito             : "2.2.9",
             espresso            : "2.2.2",
             espressoRunner      : "0.5",
             espressoRules       : "0.5"
@@ -39,9 +39,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.0-alpha2'
+        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
     }

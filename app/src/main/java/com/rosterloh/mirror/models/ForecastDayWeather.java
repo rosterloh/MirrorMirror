@@ -2,21 +2,21 @@ package com.rosterloh.mirror.models;
 
 public class ForecastDayWeather {
 
-    private int iconId;
+    private String iconId;
     private String temperature;
     private String date;
 
-    public ForecastDayWeather(int iconId, String temperature, String date) {
+    public ForecastDayWeather(String iconId, String temperature, String date) {
         this.iconId = iconId;
         this.temperature = temperature;
         this.date = date;
     }
 
-    public int getIconId() {
+    public String getIconId() {
         return iconId;
     }
 
-    public void setIconId(int iconId) {
+    public void setIconId(String iconId) {
         this.iconId = iconId;
     }
 

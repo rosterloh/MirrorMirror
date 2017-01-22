@@ -16,9 +16,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.observers.DisposableObserver;
 
 public class MqttService implements IMqttActionListener, MqttCallbackExtended, MqttTraceHandler {
 
@@ -46,31 +43,28 @@ public class MqttService implements IMqttActionListener, MqttCallbackExtended, M
 
     public Observable<String> observableListenerWrapper() {
 
-        return Observable.create(new ObservableOnSubscribe<String>() {
+        return Observable.empty();/*
+        return Observable.create((e) -> {
+            MqttManagerListener listener = new MqttManagerListener() {
 
-            @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
-                MqttManagerListener listener = new MqttManagerListener() {
+                @Override
+                public void onMqttDisconnected() {
 
-                    @Override
-                    public void onMqttDisconnected() {
+                }
 
-                    }
+                @Override
+                public void onMqttConnected() {
 
-                    @Override
-                    public void onMqttConnected() {
+                }
 
-                    }
+                @Override
+                public void onMqttMessageArrived(String topic, String payload) {
+                    e.onNext(payload);
+                }
+            };
 
-                    @Override
-                    public void onMqttMessageArrived(String topic, String payload) {
-                        e.onNext(payload);
-                    }
-                };
-
-                setListener(listener);
-            }
-        });
+            setListener(listener);
+        });*/
     }
 
     public void setListener(MqttManagerListener listener) {

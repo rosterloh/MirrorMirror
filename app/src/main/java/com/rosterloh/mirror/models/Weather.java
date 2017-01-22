@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Weather {
 
-    private int iconId;
+    private String iconId;
     private String temperature;
     private String summary;
     private String lastUpdated;
@@ -16,7 +16,7 @@ public class Weather {
 
     public static class Builder {
 
-        private int iconId;
+        private String iconId;
         private String temperature;
         private String summary;
         private String lastUpdated;
@@ -26,7 +26,7 @@ public class Weather {
         private String visibilityInfo;
         private List<ForecastDayWeather> forecast;
 
-        public Builder iconId(int iconId) { this.iconId = iconId; return this;}
+        public Builder iconId(String iconId) { this.iconId = iconId; return this;}
         public Builder temperature(String temperature) { this.temperature = temperature; return this; }
         public Builder summary(String summary) { this.summary = summary; return this; }
         public Builder lastUpdated(String lastUpdated) { this.lastUpdated = lastUpdated; return this; }
@@ -57,7 +57,7 @@ public class Weather {
         this.forecast = builder.forecast;
     }
 
-    public int getIconId() {
+    public String getIconId() {
         return iconId;
     }
 

@@ -1,16 +1,20 @@
 # [MirrorMirror](https://github.com/rosterloh/MirrorMirror) [![Build Status](https://travis-ci.org/rosterloh/MirrorMirror.svg?branch=master)](https://travis-ci.org/rosterloh/MirrorMirror)
 
-A Magic Mirror for me
+A Magic Mirror for me using mvvm databinding
+
+[![MVVM Pattern](https://github.com/googlesamples/android-architecture/wiki/images/mvp-databinding.png)]
 
 ## Inspiration
 
 * [Speculum](https://github.com/NielsMasdorp/Speculum-Android)
 * [HomeMirror](https://github.com/HannahMitt/HomeMirror)
 
-###Used libraries
+### Used libraries
+
 * [Android Design Library](http://developer.android.com/tools/support-library/index.html)
+* [Data Binding Library](http://developer.android.com/tools/data-binding/guide.html)
 * [Retrofit](https://github.com/square/retrofit)
-* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [RxJava](https://github.com/ReactiveX/RxJava)
 * [Assent](https://github.com/afollestad/assent)
 * [Pocketsphinx](http://cmusphinx.sourceforge.net/wiki/tutorialandroid)
 

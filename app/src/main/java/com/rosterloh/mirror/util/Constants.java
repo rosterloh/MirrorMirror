@@ -7,17 +7,6 @@ public final class Constants {
      */
     public static final String REDDIT_BASE_URL = "https://www.reddit.com/r/";
     public static final String FORECAST_BASE_URL = "https://api.darksky.net/forecast/";
-    public static final String YO_MOMMA_BASE_URL = "http://api.yomomma.info/";
-    public static final String GOOGLE_MAPS_BASE_URL = "http://maps.google.com/maps/api/geocode/";
-    public static final String STATIC_MAPS_URL_FIRST = "https://maps.googleapis.com/maps/api/staticmap?center=";
-    public static final String STATIC_MAPS_URL_SECOND = "&zoom=15&size=1000x1000&markers=color:blue%7Clabel:%7C";
-    public static final String STATIC_MAPS_URL_THIRD = "&key=";
-
-    /**
-     * Weather query
-     */
-    public static final String WEATHER_QUERY_SECOND_CELSIUS = "ca";
-    public static final String WEATHER_QUERY_SECOND_FAHRENHEIT = "us";
 
     /**
      * Calendar query
@@ -47,21 +36,6 @@ public final class Constants {
     public static final String SIMPLEDATEFORMAT_DDMMYY = "dd/MM/yy";
     public static final String SIMPLEDATEFORMAT_HHMMSSDDMMYY = "hh:mm:ss dd/MM/yy";
     public static final String END_OF_DAY_TIME = "23:59:59 ";
-
-    /**
-     * Units
-     */
-    public static final String PRESSURE_IMPERIAL = "in";
-    public static final String PRESSURE_METRIC = "mb";
-
-    public static final String SPEED_IMPERIAL = "mph";
-    public static final String SPEED_METRIC = "km/h";
-
-    public static final String DISTANCE_IMPERIAL = "mi";
-    public static final String DISTANCE_METRIC = "km";
-
-    public static final String TEMPERATURE_IMPERIAL = "F";
-    public static final String TEMPERATURE_METRIC = "C";
 
     /**
      * Speech commands

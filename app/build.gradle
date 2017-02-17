@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -67,6 +68,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -107,8 +113,8 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:${libs.rxandroid}"
     compile "io.reactivex.rxjava2:rxjava:${libs.rxjava}"
 
-    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${libs.pahoMqtt}"
-    compile "org.eclipse.paho:org.eclipse.paho.android.service:${libs.pahoMqtt}"
+    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${libs.mqttv3}"
+    compile "org.eclipse.paho:org.eclipse.paho.android.service:${libs.mqttAndroid}"
 
     // Dependencies for local unit tests
     testCompile "junit:junit:${test.junit}"

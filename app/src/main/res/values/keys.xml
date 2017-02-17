@@ -2,4 +2,5 @@
 <resources>
     <string name="forecast_api_key">fdf071a8d2e6b76511d9c3ed742b4657</string>
     <string name="static_maps_api_key">AIzaSyA5Yo-1XhD3nesOVDkjqL10VRWP74X1R3I</string>
+    <string name="news_api_key">3f8941773e204d91ab0bdcf808d57767</string>
 </resources>

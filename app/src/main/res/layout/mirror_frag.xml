@@ -9,7 +9,11 @@
         <import type="android.view.View" />
 
         <variable
-            name="mirror"
+            name="view"
+            type="com.rosterloh.mirror.mirror.MirrorFragment" />
+
+        <variable
+            name="viewmodel"
             type="com.rosterloh.mirror.mirror.MirrorViewModel" />
 
     </data>
@@ -36,6 +40,7 @@
             android:id="@+id/tc_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:format12Hour="dd MMM yyyy"
             android:format24Hour="dd MMM yyyy"
             android:textColor="@color/white"
@@ -50,7 +55,7 @@
             android:layout_margin="16dp"
             app:srcCompat="@drawable/ic_mic"
             android:tint="@color/white"
-            android:visibility="@{mirror.isListening ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewmodel.isListening ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:contentDescription="@string/listening" />
@@ -60,7 +65,7 @@
             android:layout_width="39dp"
             android:layout_height="39dp"
             android:layout_margin="16dp"
-            android:visibility="@{mirror.isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toBottomOf="@+id/iv_listening"
             app:layout_constraintRight_toRightOf="parent"
             style="?android:attr/progressBarStyleLarge" />
@@ -81,8 +86,8 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:textSize="50sp"
-                android:text="@{mirror.currentWeather}"
-                tools:text="@string/icon" />
+                android:text="@{viewmodel.currentWeather}"
+                tools:text="@string/icon_weather_default" />
 
             <TextView
                 android:id="@+id/tv_current_temp"
@@ -91,7 +96,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:textSize="50sp"
-                android:text="@{mirror.currentTemperature}"
+                android:text="@{viewmodel.currentTemperature}"
                 tools:text="6ºC" />
 
         </LinearLayout>
@@ -106,13 +111,15 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_current_weather"
             app:layout_constraintTop_toBottomOf="@+id/tc_date" >
 
-            <ImageView
-                android:id="@+id/iv_forecast_weather1"
+            <TextView
+                android:id="@+id/tv_forecast_weather1"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_margin="8dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_weather_partlycloudy" />
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:text="@string/icon_weather_default" />
 
             <TextView
                 android:id="@+id/tv_forecast_temp1"
@@ -144,13 +151,15 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_forecast_weather1"
             app:layout_constraintTop_toBottomOf="@+id/tc_date" >
 
-            <ImageView
-                android:id="@+id/iv_forecast_weather2"
+            <TextView
+                android:id="@+id/tv_forecast_weather2"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_margin="8dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_weather_sunny" />
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:text="@string/icon_weather_default" />
 
             <TextView
                 android:id="@+id/tv_forecast_temp2"
@@ -182,13 +191,15 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_forecast_weather2"
             app:layout_constraintTop_toBottomOf="@+id/tc_date" >
 
-            <ImageView
-                android:id="@+id/iv_forecast_weather3"
+            <TextView
+                android:id="@+id/tv_forecast_weather3"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_margin="8dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_weather_sleet" />
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:text="@string/icon_weather_default" />
 
             <TextView
                 android:id="@+id/tv_forecast_temp3"
@@ -220,13 +231,15 @@
             app:layout_constraintLeft_toRightOf="@+id/ll_forecast_weather3"
             app:layout_constraintTop_toBottomOf="@+id/tc_date" >
 
-            <ImageView
-                android:id="@+id/iv_forecast_weather4"
+            <TextView
+                android:id="@+id/tv_forecast_weather4"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_margin="8dp"
                 android:layout_gravity="center_horizontal"
-                tools:src="@drawable/ic_weather_partlycloudy" />
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:text="@string/icon_weather_default" />
 
             <TextView
                 android:id="@+id/tv_forecast_temp4"
@@ -264,7 +277,7 @@
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_wind_stats"
+            android:src="@drawable/weather_windy"
             android:tint="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_1" />
@@ -279,7 +292,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="@{mirror.wind}"
+            android:text="@{viewmodel.wind}"
             tools:text="13km/k W | 22C"
             app:layout_constraintLeft_toRightOf="@+id/iv_stats_wind"
             app:layout_constraintTop_toTopOf="@+id/iv_stats_wind" />
@@ -292,7 +305,7 @@
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_water_percent"
+            android:src="@drawable/water_percent"
             android:tint="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stats_wind" />
@@ -307,7 +320,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="@{mirror.humidity}"
+            android:text="@{viewmodel.humidity}"
             tools:text="100%"
             app:layout_constraintLeft_toRightOf="@+id/iv_stats_humidity"
             app:layout_constraintTop_toTopOf="@+id/iv_stats_humidity" />
@@ -321,7 +334,7 @@
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_gauge"
+            android:src="@drawable/gauge"
             android:tint="@color/white"
             app:layout_constraintLeft_toRightOf="@+id/tv_stats_visibility"
             app:layout_constraintBottom_toBottomOf="@+id/iv_stats_visibility" />
@@ -336,7 +349,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="@{mirror.pressure}"
+            android:text="@{viewmodel.pressure}"
             tools:text="1020mb"
             app:layout_constraintLeft_toRightOf="@+id/iv_stats_pressure"
             app:layout_constraintTop_toTopOf="@+id/iv_stats_pressure" />
@@ -350,7 +363,7 @@
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_visibility"
+            android:src="@drawable/eye"
             android:tint="@color/white"
             app:layout_constraintLeft_toRightOf="@+id/tv_stats_humidity"
             app:layout_constraintBottom_toBottomOf="@+id/iv_stats_humidity" />
@@ -364,7 +377,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:text="@{mirror.visibility}"
+            android:text="@{viewmodel.visibility}"
             tools:text="16km"
             app:layout_constraintLeft_toRightOf="@+id/iv_stats_visibility"
             app:layout_constraintTop_toTopOf="@+id/iv_stats_visibility" />
@@ -379,7 +392,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="italic"
-            android:text="@{mirror.lastUpdate}"
+            android:text="@{viewmodel.lastUpdate}"
             tools:text="Last updated: 26 minutes ago"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_1" />
@@ -394,6 +407,7 @@
 
         <ImageView
             android:id="@+id/iv_calendar"
+            android:contentDescription="Calendar icon"
             android:layout_width="62dp"
             android:layout_height="62dp"
             android:layout_marginTop="16dp"
@@ -401,7 +415,7 @@
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_calendar"
+            android:src="@drawable/calendar"
             android:tint="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stats_humidity" />
@@ -427,55 +441,40 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_separator_2" />
 
-        <View
+        <android.support.constraint.Guideline
             android:id="@+id/v_separator_3"
             android:layout_width="0dp"
             android:layout_height="4dp"
-            android:layout_marginBottom="16dp"
             android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/iv_reddit_post" />
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintGuide_percent="0.80" />
 
         <ImageView
-            android:id="@+id/iv_reddit_post"
+            android:id="@+id/iv_news"
+            android:contentDescription="News icon"
             android:layout_width="62dp"
             android:layout_height="62dp"
             android:paddingBottom="4dp"
             android:paddingEnd="4dp"
             android:paddingStart="0dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_reddit"
+            android:src="@drawable/newspaper"
             android:tint="@color/white"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/tv_reddit_post_votes" />
+            app:layout_constraintTop_toBottomOf="@+id/v_separator_3" />
 
-        <TextView
-            android:id="@+id/tv_reddit_post_title"
-            android:layout_width="0dp"
+        <ListView
+            android:id="@+id/lv_news"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="3"
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            tools:text="Butte man arrested after calling cops to complain he was ripped off in meth deal to complain he was ripped off in meth deal"
-            app:layout_constraintLeft_toRightOf="@+id/iv_reddit_post"
+            app:items="@{viewmodel.newsItems}"
+            app:layout_constraintLeft_toRightOf="@+id/iv_news"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/v_separator_3" />
-
-        <TextView
-            android:id="@+id/tv_reddit_post_votes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/v_separator_3"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/white"
-            android:textSize="26sp"
-            tools:text="9999"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:textSize="28sp"/>
 
     </android.support.constraint.ConstraintLayout>
 

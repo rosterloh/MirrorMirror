@@ -11,6 +11,8 @@
     <string name="no_permission_for_calendar">You will not see your latest event, you can change this in the system settings on your device</string>
     <string name="no_permission_for_voice">Permission to record audio denied, you can always change this in the system settings of your device</string>
     <string name="loading_error">Failed to load data</string>
+    <string name="no_data">No data</string>
+    <string name="no_data_description"/>
 
     <!--Main Activity-->
     <string name="old_config_found_snackbar">Saved configuration found</string>

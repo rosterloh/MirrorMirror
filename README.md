@@ -2,7 +2,7 @@
 
 A Magic Mirror for me using mvvm databinding
 
-[![MVVM Pattern](https://github.com/googlesamples/android-architecture/wiki/images/mvp-databinding.png)]
+[![MVVM Pattern](https://github.com/googlesamples/android-architecture/wiki/images/mvvm-databinding.png)]
 
 ## Inspiration
 

@@ -1,25 +1,70 @@
 package com.rosterloh.mirror.mirror;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.rosterloh.mirror.R;
-import com.rosterloh.mirror.data.DataRepository;
-import com.rosterloh.mirror.data.LocalDataSource;
-import com.rosterloh.mirror.data.RemoteDataSource;
+import com.rosterloh.mirror.ViewModelHolder;
+import com.rosterloh.mirror.networking.MirrorRequestsManager;
 import com.rosterloh.mirror.util.ActivityUtils;
 
-public class MirrorActivity extends AppCompatActivity implements View.OnSystemUiVisibilityChangeListener {
+public class MirrorActivity extends AppCompatActivity implements
+        NewsItemNavigator, View.OnSystemUiVisibilityChangeListener {
+
+    private MirrorViewModel viewModel;
+
+    public static final String MIRROR_VIEWMODEL_TAG = "MIRROR_VIEWMODEL_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mirror_act);
 
+        MirrorFragment mirrorFragment = findOrCreateViewFragment();
+
+        viewModel = findOrCreateViewModel();
+
+        // Link View and ViewModel
+        mirrorFragment.setViewModel(viewModel);
+
+        //never sleep
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private MirrorViewModel findOrCreateViewModel() {
+        // In a configuration change we might have a ViewModel present. It's retained using the
+        // Fragment Manager.
+        @SuppressWarnings("unchecked")
+        ViewModelHolder<MirrorViewModel> retainedViewModel =
+                (ViewModelHolder<MirrorViewModel>) getSupportFragmentManager()
+                        .findFragmentByTag(MIRROR_VIEWMODEL_TAG);
+
+        if (retainedViewModel != null && retainedViewModel.getViewmodel() != null) {
+            // If the model was retained, return it.
+            return retainedViewModel.getViewmodel();
+        } else {
+            // There is no ViewModel yet, create it.
+            MirrorViewModel viewModel = new MirrorViewModel(
+                    MirrorRequestsManager.getInstance(getApplicationContext()),
+                    getApplicationContext());
+
+            // and bind it to this Activity's lifecycle using the Fragment Manager.
+            ActivityUtils.addFragmentToActivity(
+                    getSupportFragmentManager(),
+                    ViewModelHolder.createContainer(viewModel),
+                    MIRROR_VIEWMODEL_TAG);
+            return viewModel;
+        }
+    }
+
+    @NonNull
+    private MirrorFragment findOrCreateViewFragment() {
         MirrorFragment mirrorFragment =
                 (MirrorFragment) getSupportFragmentManager().findFragmentById(R.id.fl_content);
         if (mirrorFragment == null) {
@@ -28,19 +73,17 @@ public class MirrorActivity extends AppCompatActivity implements View.OnSystemUi
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), mirrorFragment, R.id.fl_content);
         }
+        return mirrorFragment;
+    }
 
-        DataRepository data = DataRepository.getInstance(RemoteDataSource.getInstance(),
-                LocalDataSource.getInstance(getApplicationContext()));
-        // Create the presenter
-        MirrorPresenter mirrorPresenter = new MirrorPresenter(data, mirrorFragment);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        viewModel.handleActivityResult(requestCode, resultCode);
+    }
 
-        MirrorViewModel mirrorViewModel =
-                new MirrorViewModel(getApplicationContext(), mirrorPresenter);
-
-        mirrorFragment.setViewModel(mirrorViewModel);
-
-        //never sleep
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    @Override
+    public void openItemDetails(String itemId) {
+        // Expand to show full content
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

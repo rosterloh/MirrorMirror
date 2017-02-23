@@ -86,11 +86,6 @@ android {
     }
 }
 
-repositories {
-    maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // Android
@@ -105,7 +100,7 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:${libs.retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${libs.retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:2.1.1-SNAPSHOT"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit}"
 
     compile "com.squareup.okhttp3:okhttp:${libs.okhttp}"
     compile "com.squareup.okhttp3:logging-interceptor:${libs.okhttp}"

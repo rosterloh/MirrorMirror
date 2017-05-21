@@ -16,7 +16,7 @@ public class WeatherUtils {
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
         Typeface weatherFont = Typeface.createFromAsset(context.getAssets(),
-                "fonts/weathericons-regular-webfont.ttf");
+                "font/weathericons.ttf");
         int textColor = ContextCompat.getColor(context, R.color.white);
 
         paint.setAntiAlias(true);

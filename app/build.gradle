@@ -1,33 +1,19 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 def versionMajor = 1
 def versionMinor = 0
 def versionPatch = 0
-def versionBuild = {
-    if (project.hasProperty("buildNumber")) {
-        return project.buildNumber as int
-    } else if (System.getenv("BUILD_NUMBER")) {
-        return System.getenv("BUILD_NUMBER") as int
-    } else {
-        return 0
-    }
-}.call()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
-def cfg = rootProject.ext.configuration
-def libs = rootProject.ext.libraries;
-def test = rootProject.ext.testingLibraries;
-
 android {
-    compileSdkVersion cfg.compileVersion
-    buildToolsVersion cfg.buildToolsVersion
+    compileSdkVersion rootProject.ext.compile_version
+    buildToolsVersion rootProject.ext.build_tools_version
 
     defaultConfig {
-        applicationId cfg.package
-        minSdkVersion cfg.minSdk
-        targetSdkVersion cfg.targetSdk
-        versionCode versionMajor * 10000000 + versionMinor * 100000 + versionPatch * 1000 + versionBuild
+        applicationId rootProject.ext.package_name
+        minSdkVersion rootProject.ext.min_sdk_version
+        targetSdkVersion rootProject.ext.target_sdk_version
+        versionCode versionMajor * 100000 + versionMinor * 1000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -61,13 +47,6 @@ android {
         }
     }
 
-    // Always show the result of every unit test, even if it passes.
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -88,40 +67,66 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    // Android
-    compile "com.android.support:design:${libs.supportVersion}"
-    compile "com.android.support:appcompat-v7:${libs.supportVersion}"
-    //compile "com.android.support:cardview-v7:${libs.supportVersion}"
-    //compile "com.android.support:recyclerview-v7:${libs.supportVersion}"
-    compile "com.android.support.constraint:constraint-layout:${libs.constraintLayout}"
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    compile "com.android.support:design:$support_version"
+    //compile "com.android.support:cardview-v7:$support_version"
+    compile "com.android.support:recyclerview-v7:$support_version"
+    compile "android.arch.persistence.room:runtime:$arch_version"
+    compile "android.arch.lifecycle:runtime:$arch_version"
+    compile "android.arch.lifecycle:extensions:$arch_version"
 
-    //compile "com.google.firebase:firebase-analytics:${libs.playServices}"
-    compile "com.google.firebase:firebase-crash:${libs.playServices}"
+    //compile "com.google.firebase:firebase-analytics:$play_services_version"
+    compile "com.google.firebase:firebase-crash:$play_services_version"
 
-    compile "com.squareup.retrofit2:retrofit:${libs.retrofit}"
-    compile "com.squareup.retrofit2:converter-gson:${libs.retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit}"
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
-    compile "com.squareup.okhttp3:okhttp:${libs.okhttp}"
-    compile "com.squareup.okhttp3:logging-interceptor:${libs.okhttp}"
+    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
-    compile "io.reactivex.rxjava2:rxandroid:${libs.rxandroid}"
-    compile "io.reactivex.rxjava2:rxjava:${libs.rxjava}"
+    compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    compile "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
-    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${libs.mqttv3}"
-    compile "org.eclipse.paho:org.eclipse.paho.android.service:${libs.mqttAndroid}"
+    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:$mqtt_version"
+    compile "org.eclipse.paho:org.eclipse.paho.android.service:$mqtt_version"
 
-    // Dependencies for local unit tests
-    testCompile "junit:junit:${test.junit}"
-    testCompile "org.mockito:mockito-core:${test.mockito}"
-    testCompile "org.hamcrest:hamcrest-all:${test.hamcrest}"
+    compile "com.google.dagger:dagger:$dagger_version"
+    compile "com.google.dagger:dagger-android:$dagger_version"
+    compile "com.google.dagger:dagger-android-support:$dagger_version"
 
-    // Android Testing Support Library's runner and rules
-    androidTestCompile "com.android.support.test:runner:${test.runner}"
-    androidTestCompile "com.android.support.test:rules:${test.rules}"
-    androidTestCompile "com.android.support:support-annotations:${libs.supportVersion}"
-    androidTestCompile "junit:junit:${test.junit}"
-    androidTestCompile "org.mockito:mockito-core:${test.mockito}"
+    compile "com.jakewharton.timber:timber:$timber_version"
+
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
+
+    testCompile "junit:junit:$junit_version"
+    testCompile ("android.arch.core:core-testing:$arch_version", {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+    })
+
+    androidTestCompile "com.android.support:appcompat-v7:$support_version"
+    androidTestCompile "com.android.support:recyclerview-v7:$support_version"
+    androidTestCompile "com.android.support:support-v4:$support_version"
+    androidTestCompile "com.android.support:design:$support_version"
+
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    })
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espresso_version", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    })
+
+    androidTestCompile("android.arch.core:core-testing:$arch_version", {
+    })
+    androidTestCompile "org.mockito:mockito-android:$mockito_version"
 }
 
 ant.importBuild 'assets.xml'

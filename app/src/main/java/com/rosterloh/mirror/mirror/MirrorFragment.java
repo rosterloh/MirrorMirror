@@ -61,7 +61,7 @@ public class MirrorFragment extends Fragment {
     void setupTextViews() {
 
         Typeface weatherFontIcon = Typeface.createFromAsset(getActivity().getAssets(),
-                "fonts/weathericons-regular-webfont.ttf");
+                "font/weathericons.ttf");
         Typeface robotoBlack = Typeface.createFromAsset(getActivity().getAssets(),
                 "fonts/Roboto-Black.ttf");
 

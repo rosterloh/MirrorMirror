@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import com.rosterloh.mirror.R;
 import com.rosterloh.mirror.ViewModelHolder;
 import com.rosterloh.mirror.networking.MirrorRequestsManager;
-import com.rosterloh.mirror.util.ActivityUtils;
 
 public class MirrorActivity extends AppCompatActivity implements
         NewsItemNavigator, View.OnSystemUiVisibilityChangeListener {

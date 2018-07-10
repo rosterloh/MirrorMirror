@@ -1,20 +1,45 @@
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:textColorSecondary">@color/grey</item>
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="InputLayout" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColorHint">@color/grey</item>
-        <item name="colorAccent">@color/grey</item>
-        <item name="colorControlNormal">@color/grey</item>
-        <item name="colorControlActivated">@color/primary</item>
-        <item name="android:textColorHighlight">@color/primary</item>
-        <item name="android:textColorLink">@color/primary</item>
+    <style name="AppTheme" parent="BaseAppTheme"/>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">#ff000000</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="BaseTextStyle">
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="TemperatureStyle" parent="BaseTextStyle">
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="WeatherTextStyle" parent="BaseTextStyle">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="TimeStyle" parent="BaseTextStyle">
+        <item name="android:textSize">@dimen/large_text_size</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="DateStyle" parent="BaseTextStyle">
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
 </resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.rosterloh.mirror.MirrorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/temperature"
+            style="@style/TemperatureStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="100sp"
+            android:text="@{Double.toString(viewModel.weather.temperature)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="72°"/>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="Weather Icon"
+            android:src="@{viewModel.weather.getIconDrawable}"
+            app:layout_constraintBottom_toBottomOf="@+id/temperature"
+            app:layout_constraintStart_toEndOf="@+id/temperature"
+            app:layout_constraintTop_toTopOf="@+id/temperature"
+            tools:src="@drawable/partly_cloudy_day" />
+
+        <TextView
+            android:id="@+id/weather_summary"
+            style="@style/WeatherTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="380dp"
+            android:text="@{viewModel.weather.summary}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature"
+            tools:text="Mostly cloudy until tomorrow evening" />
+
+        <TextView
+            android:id="@+id/precipitation"
+            style="@style/WeatherTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:drawableStart="@drawable/umbrella"
+            android:drawablePadding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weather_summary"
+            tools:text="6%" />
+
+        <TextClock
+            android:id="@+id/time"
+            style="@style/TimeStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="h\uee01mm"
+            android:format24Hour="H\uee01mm"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="12\uee0134"/>
+
+        <TextClock
+            android:id="@+id/date"
+            style="@style/DateStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            android:format12Hour="EEEE\nMMMM d"
+            android:format24Hour="EEEE\nd MMMM"
+            tools:text="Sunday\nMarch 4"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
